@@ -1,10 +1,15 @@
 package com.example.corridafacil.Mapa
 
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
+import android.media.audiofx.BassBoost
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.corridafacil.R
@@ -45,30 +50,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         startVariable()
+        checkGPSEnabled()
     }
 
     private fun startVariable() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
     }
+    private fun checkGPSEnabled(){
+        if (!isLocationEnabled()){
+            showAlert()
+        }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    }
+
+    private fun showAlert() {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Ative sua localização")
+                .setMessage("A localização do seu dispositivo deve estar 'desligada'.\nPor favor ative sua localização")
+                .setPositiveButton("Abrir configurações") { paramDialogInterface, paramInt ->
+                    val myIntent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(myIntent)
+                }
+                .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
+        dialog.show()
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getLocationPermission()
         getDeviceLocation()
-        // Add a marker in Sydney and move the camera
-       /* val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
     }
 
 
