@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.example.corridafacil.Authentication.data.LoginRepository
-import com.example.corridafacil.Authentication.data.Result
+import com.example.corridafacil.Authentication.Login.data.LoginRepository
+import com.example.corridafacil.Authentication.Login.data.Result
 
-import com.example.corridafacil.Authentication.R
+import com.example.corridafacil.R
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

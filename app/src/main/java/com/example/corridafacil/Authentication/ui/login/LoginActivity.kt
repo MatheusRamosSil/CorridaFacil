@@ -1,6 +1,7 @@
 package com.example.corridafacil.Authentication.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -14,8 +15,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.corridafacil.Authentication.Register.RegisterForm01Activity
+import com.example.corridafacil.Authentication.Register.RegisterForm02Activity
+import com.example.corridafacil.Authentication.Register.RegisterForm03Activity
 
-import com.example.corridafacil.Authentication.R
+import com.example.corridafacil.R
 
 class LoginActivity : AppCompatActivity() {
 
@@ -91,8 +95,11 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+               /* loading.visibility = View.VISIBLE
+                loginViewModel.login(username.text.toString(), password.text.toString())*/
+                val irParaFormsRegister = Intent(this@LoginActivity, RegisterForm01Activity::class.java)
+               startActivity(irParaFormsRegister)
+                
             }
         }
     }

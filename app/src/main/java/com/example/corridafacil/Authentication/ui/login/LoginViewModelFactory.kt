@@ -2,8 +2,8 @@ package com.example.corridafacil.Authentication.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.corridafacil.Authentication.data.LoginDataSource
-import com.example.corridafacil.Authentication.data.LoginRepository
+import com.example.corridafacil.Authentication.Login.data.LoginDataSource
+import com.example.corridafacil.Authentication.Login.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

@@ -1,4 +1,4 @@
-package com.example.corridafacil.Authentication.data
+package com.example.corridafacil.Authentication.Login.data
 
 /**
  * A generic class that holds a value with its loading status.

@@ -1,6 +1,6 @@
-package com.example.corridafacil.Authentication.data
+package com.example.corridafacil.Authentication.Login.data
 
-import com.example.corridafacil.Authentication.data.model.LoggedInUser
+import com.example.corridafacil.Authentication.Login.data.model.LoggedInUser
 import java.io.IOException
 
 /**

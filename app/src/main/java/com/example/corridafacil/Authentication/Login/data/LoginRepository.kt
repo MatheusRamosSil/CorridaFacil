@@ -1,6 +1,6 @@
-package com.example.corridafacil.Authentication.data
+package com.example.corridafacil.Authentication.Login.data
 
-import com.example.corridafacil.Authentication.data.model.LoggedInUser
+import com.example.corridafacil.Authentication.Login.data.model.LoggedInUser
 
 /**
  * Class that requests authentication and user information from the remote data source and

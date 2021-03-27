@@ -1,4 +1,4 @@
-package com.example.corridafacil.Authentication.data.model
+package com.example.corridafacil.Authentication.Login.data.model
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
