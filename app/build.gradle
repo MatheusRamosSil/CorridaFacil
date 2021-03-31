@@ -64,7 +64,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     // Firebase: Cloud Storage library
     implementation 'com.google.firebase:firebase-storage-ktx'
+    // Firebase: Messaging
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     // CCP Code Country
     // Add CCP of detected code country
     implementation 'com.hbb20:ccp:2.4.7'
+
 }

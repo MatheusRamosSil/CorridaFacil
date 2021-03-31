@@ -34,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+        val registerButton = findViewById<Button>(R.id.button3)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
@@ -95,11 +96,12 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-               /* loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())*/
+                loading.visibility = View.VISIBLE
+                loginViewModel.login(username.text.toString(), password.text.toString())
+            }
+            registerButton.setOnClickListener {
                 val irParaFormsRegister = Intent(this@LoginActivity, RegisterForm01Activity::class.java)
-               startActivity(irParaFormsRegister)
-                
+                startActivity(irParaFormsRegister)
             }
         }
     }
