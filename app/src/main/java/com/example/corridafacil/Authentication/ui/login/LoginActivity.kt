@@ -15,9 +15,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.example.corridafacil.Authentication.Register.RegisterForm01Activity
-import com.example.corridafacil.Authentication.Register.RegisterForm02Activity
-import com.example.corridafacil.Authentication.Register.RegisterForm03Activity
+import com.example.corridafacil.Authentication.AuthenticatonEmail
+import com.example.corridafacil.Authentication.Register.Formularios.PrimeiroFormulario
+import com.example.corridafacil.Exceptions.MensagesSystemApp
+import com.example.corridafacil.Mapa.MapsActivity
 
 import com.example.corridafacil.R
 
@@ -29,12 +30,18 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
-
-        val username = findViewById<EditText>(R.id.username)
+        val emailUser = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
         val registerButton = findViewById<Button>(R.id.button3)
+        var authenticationEmail = AuthenticatonEmail()
+
+
+        if(authenticationEmail.checkIfEmailVerified()){
+            val irParaMapa= Intent(this@LoginActivity, MapsActivity::class.java)
+            startActivity(irParaMapa)
+        }
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
@@ -46,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                emailUser.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
                 password.error = getString(loginState.passwordError)
@@ -61,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
+
             }
             setResult(Activity.RESULT_OK)
 
@@ -69,9 +76,9 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        username.afterTextChanged {
+        emailUser.afterTextChanged {
             loginViewModel.loginDataChanged(
-                    username.text.toString(),
+                    emailUser.text.toString(),
                     password.text.toString()
             )
         }
@@ -79,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
         password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                        username.text.toString(),
+                        emailUser.text.toString(),
                         password.text.toString()
                 )
             }
@@ -88,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
-                                username.text.toString(),
+                                emailUser.text.toString(),
                                 password.text.toString()
                         )
                 }
@@ -96,11 +103,15 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+
+                authenticationEmail.signInEmailAndPassword(emailUser.text.toString(),password.text.toString())
+                if(authenticationEmail.checkIfEmailVerified()){
+                    val irParaMapa= Intent(this@LoginActivity, MapsActivity::class.java)
+                    startActivity(irParaMapa)
+                }
             }
             registerButton.setOnClickListener {
-                val irParaFormsRegister = Intent(this@LoginActivity, RegisterForm01Activity::class.java)
+                val irParaFormsRegister = Intent(this@LoginActivity, PrimeiroFormulario::class.java)
                 startActivity(irParaFormsRegister)
             }
         }

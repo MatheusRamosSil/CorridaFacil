@@ -5,7 +5,7 @@
     android:id="@+id/imageRegister"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Authentication.Register.RegisterForm01Activity">
+    tools:context=".Authentication.Register.Formularios.TerceiroFormulario">
 
     <ImageView
         android:id="@+id/imageView2"

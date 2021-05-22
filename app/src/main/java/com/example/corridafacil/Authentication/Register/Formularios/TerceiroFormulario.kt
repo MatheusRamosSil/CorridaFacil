@@ -1,4 +1,4 @@
-package com.example.corridafacil.Authentication.Register
+package com.example.corridafacil.Authentication.Register.Formularios
 
 import android.Manifest
 import android.app.Activity
@@ -10,17 +10,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.webkit.PermissionRequest
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.corridafacil.Authentication.AuthenticatonEmail
+import com.example.corridafacil.Authentication.ui.login.LoginActivity
+import com.example.corridafacil.Mapa.MapsActivity
+import com.example.corridafacil.Models.Passageiro
 import com.example.corridafacil.R
+import com.example.corridafacil.Services.Authentication.Authentication
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -31,58 +33,62 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.PermissionListener
-import java.io.File
 import java.io.InputStream
 
 
-class RegisterForm01Activity : AppCompatActivity() {
-    private lateinit var getNome:EditText
-    private lateinit var getSobrenome:EditText
-    private lateinit var getEmail:EditText
-    private lateinit var getPassword:EditText
+class TerceiroFormulario : AppCompatActivity() {
+    private lateinit var nome:EditText
+    private lateinit var sobrenome:EditText
+    private lateinit var email:EditText
+    private lateinit var password:EditText
+    private lateinit var tokenOfDevice: String
     private lateinit var imageView:ImageView
     private lateinit var buttonNextPage:Button
     private lateinit var autheticationUser: FirebaseAuth
-    private lateinit var getUrlImage:String
+    private lateinit var urlDaImage:String
     private lateinit var uploadTask:UploadTask
     var storage: FirebaseStorage = FirebaseStorage.getInstance()
     private lateinit var storageRef:StorageReference
 
-    private lateinit var  selectedImage: Uri
+    private lateinit var  imagemEscolhida: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_form01)
         startVariables()
     }
-
-
     private fun startVariables() {
          autheticationUser = Firebase.auth
          val storage = Firebase.storage
          storageRef = storage.reference
-         getNome = findViewById(R.id.editTextNome)
-         getSobrenome = findViewById(R.id.editTextSobrenome)
-         getEmail = findViewById(R.id.editTextEmail)
-         getPassword = findViewById(R.id.editTextPassword)
+         nome = findViewById(R.id.editTextNome)
+         sobrenome = findViewById(R.id.editTextSobrenome)
+         email = findViewById(R.id.editTextEmail)
+         password = findViewById(R.id.editTextPassword)
+         tokenOfDevice = FirebaseInstanceId.getInstance().token.toString()
          imageView = findViewById(R.id.imageView2)
          buttonNextPage = findViewById(R.id.button)
          buttonNextPage.setOnClickListener(this::buttonNextPage)
-         imageView.setOnClickListener(this::permissaoDeAcessoAArquivos)
+         imageView.setOnClickListener(this::activedPermissionsAcessLocalFilesDevice)
+    }
+    fun activedPermissionsAcessLocalFilesDevice(v: View){
+        permissaoDeAcessoAArquivos()
     }
     fun buttonNextPage(v:View) {
-        val intent = Intent(this, RegisterForm02Activity::class.java).apply {
-            putExtra("nomeDoUsuario", getNome.text.toString())
-            putExtra("sobrenomeDoUsuario", getSobrenome.text.toString())
-            putExtra("emailDoUsuario", getEmail.text.toString())
-            putExtra("passwordDoUsuario", getPassword.text.toString())
-            putExtra("fotoDoUsuario", getUrlImage?.trim())
-        }
-        startActivity(intent)
+        autenticandoPassageiro()
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
-    private fun permissaoDeAcessoAArquivos(v:View) {
-        Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(object :PermissionListener {
+    private fun autenticandoPassageiro() {
+        val authentication = AuthenticatonEmail()
+        var newPassageiro = Passageiro(null,nome.text.toString(),sobrenome.text.toString(),email.text.toString(),Passageiro.passageiro.telefone,password.text.toString(),urlDaImage,true,tokenOfDevice)
+        authentication.createAccountWithEmailAndPassword(newPassageiro)
+
+    }
+
+    fun permissaoDeAcessoAArquivos() {
+        Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(object :
+                PermissionListener {
             override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
                 abrirAGaleriaDeImagensDispositivoDoUsuario()
             }
@@ -92,22 +98,36 @@ class RegisterForm01Activity : AppCompatActivity() {
             }
 
             override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                TODO("Not yet implemented")
+                TODO("Adicionar uma exception")
+
             }
 
         }).check()
 
     }
 
-
-    private fun abrirAGaleriaDeImagensDispositivoDoUsuario() {
+    fun abrirAGaleriaDeImagensDispositivoDoUsuario() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(Intent.createChooser(intent, "Abrindo galeria"), 1)
     }
 
-    private fun uploadDaImagemParaOStorage(myFile: File) {
-        val file = Uri.fromFile(myFile)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.data != null){
+            //the image URI
+                imagemEscolhida = data.data!!
+                exibirImagemSelecionada(contentResolver.openInputStream(imagemEscolhida))
+                uploadDaImagemParaOStorage()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+    private fun exibirImagemSelecionada(inputStream: InputStream?) {
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        imageView.setImageBitmap(bitmap)
+    }
+
+    private fun uploadDaImagemParaOStorage() {
+        var file = imagemEscolhida
         val riversRef = storageRef.child("passageirosFotosPerfil/" + file.lastPathSegment)
         uploadTask = riversRef.putFile(file)
         // Register observers to listen for when the download is done or if it fails
@@ -115,34 +135,15 @@ class RegisterForm01Activity : AppCompatActivity() {
             // Handle unsuccessful uploads
         }).addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot?> {
             riversRef.downloadUrl.addOnSuccessListener { uri -> // Got the download URL for 'users/me/profile.png'
-                getUrlImage = uri.toString()
+                urlDaImage = uri.toString()
                 Toast.makeText(this, "Upload image OK", Toast.LENGTH_LONG).show()
             }.addOnFailureListener { e -> Toast.makeText(this, e.message, Toast.LENGTH_LONG).show() }
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.data != null){
-            //the image URI
-                selectedImage = data.data!!
-                getRealPathFromURI(selectedImage)
-                try {
-                    showImagemSelecionada(contentResolver.openInputStream(selectedImage))
-                } catch (e: Exception) {
-
-                }
-
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-
-    private fun showImagemSelecionada(inputStream: InputStream?) {
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-        imageView.setImageBitmap(bitmap)
-    }
-
-    // Função para obter o caminho da imagem selecionadas
+    /*
+     TODO apagar essa função
+     */
     private fun getRealPathFromURI(contentUri: Uri) {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(this, contentUri, proj, null, null, null)
@@ -151,8 +152,9 @@ class RegisterForm01Activity : AppCompatActivity() {
         cursor.moveToFirst()
         val result: String = cursor.getString(column_index)
         cursor.close()
-        uploadDaImagemParaOStorage(File(result))
+        // uploadDaImagemParaOStorage(File(result))
     }
+
 
 }
 

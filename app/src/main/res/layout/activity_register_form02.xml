@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Authentication.Register.RegisterForm02Activity">
+    tools:context=".Authentication.Register.Formularios.PrimeiroFormulario">
 
     <com.hbb20.CountryCodePicker
         android:id="@+id/ccp"

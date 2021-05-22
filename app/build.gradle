@@ -52,6 +52,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -69,5 +70,9 @@ dependencies {
     // CCP Code Country
     // Add CCP of detected code country
     implementation 'com.hbb20:ccp:2.4.7'
+    // Google Play services-auth
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    //Firabase: Dynamic-links
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
 
 }
