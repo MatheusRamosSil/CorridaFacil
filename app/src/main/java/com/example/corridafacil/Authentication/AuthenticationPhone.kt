@@ -2,7 +2,6 @@ package com.example.corridafacil.Authentication
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -14,56 +13,37 @@ import java.util.concurrent.TimeUnit
 class AuthenticationPhone : AppCompatActivity(){
 
     private  var mAuth = FirebaseAuth.getInstance()
-    private lateinit var mVerificationId:String
     private lateinit var mCallbacks:PhoneAuthProvider.OnVerificationStateChangedCallbacks
     lateinit var mVerificationCode:String
 
-    private val falhaNaVerificaacoDoTelefone = "Por favor digite novavemnte seu numero de telefone"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initilizedMCallbacks()
 
     }
 
-    fun initilizedMCallbacks(): PhoneAuthProvider.OnVerificationStateChangedCallbacks {
-        mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
-            override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                super.onCodeSent(p0, p1)
-                mVerificationCode = p0
-            }
-            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                val code = p0.smsCode
-                code?.let { verifyPhoneNumberWithCode(mVerificationCode,it) }
-            }
-            override fun onVerificationFailed(p0: FirebaseException) {
-                Log.d(ContentValues.TAG, "Teste de saida: "+p0)
-            }
-        }
-        return this.mCallbacks
-    }
 
-    fun startPhoneNumberVerification(telefoneUser: String?, activity: Activity) {
+    fun startPhoneNumberVerification(telefoneUser: String?, mCallbacks:PhoneAuthProvider.OnVerificationStateChangedCallbacks) {
         var mAuth = FirebaseAuth.getInstance()
         val options = PhoneAuthOptions.newBuilder(mAuth)
             .setPhoneNumber(telefoneUser) // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setCallbacks(initilizedMCallbacks()) // OnVerificationStateChangedCallbacks
-            .setActivity(activity)
+            .setCallbacks(mCallbacks) // OnVerificationStateChangedCallbacks
+            .setActivity(this)
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    fun verifyPhoneNumberWithCode(verificationId: String?, code: String?) {
-        // [START verify_with_code]
-        val credential = PhoneAuthProvider.getCredential(verificationId, code)
-        signInWithPhoneAuthCredential(credential)
+    fun verifyPhoneNumberWithCode(verificationId: String, code: String){
+        val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
+        autenticandoNumeroDeTelefoneComSign(credential)
     }
 
-    fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential?){
+    fun autenticandoNumeroDeTelefoneComSign(credential: PhoneAuthCredential?) {
+        var checkCredential = false
         mAuth.signInWithCredential(credential).addOnCompleteListener{ task ->
             if (task.isSuccessful) {
                 val user = task.result.user
+                checkCredential = true
             } else {
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
                     // The verification code entered was invalid
@@ -71,7 +51,6 @@ class AuthenticationPhone : AppCompatActivity(){
 
             }
         }
-
     }
 
 }
