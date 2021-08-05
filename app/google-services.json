@@ -81,11 +81,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "47994110418-ff4tqksqmtn52qsq9a9s4tpi6fta1unq.apps.googleusercontent.com",
+          "client_id": "47994110418-kqu6tmt2u8qs2dk3i0ik58118ghr1d9b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.corridafacil",
-            "certificate_hash": "fceb85ab5425e8e05835153a56a83ebc0becd44b"
+            "certificate_hash": "85c488a5048de372536986a960afc1fb0df1a8b2"
           }
         },
         {

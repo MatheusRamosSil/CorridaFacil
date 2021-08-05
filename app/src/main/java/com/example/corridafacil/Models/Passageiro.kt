@@ -10,11 +10,8 @@ data class Passageiro (var id: String? = null,
                   var ativado: Boolean? = null,
                   var tokenPassageiro: String? = null) {
 
-    companion object{
-         var passageiro: Passageiro
-        init {
-            passageiro = Passageiro()
-        }
+    companion object Factory{
+        fun create():Passageiro = Passageiro()
     }
 
 
