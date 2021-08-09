@@ -10,17 +10,9 @@ class PassageiroDAO : PassageiroDAOImp{
     //private var mDatabase: DatabaseReference? = null
     var mDatabase = FirebaseDatabase.getInstance().reference
 
-    /*fun salvarPassageiroNoBancoDeDados(userId: String?, passageiro: Passageiro?) {
-        mDatabase = FirebaseDatabase.getInstance().reference
-        mDatabase!!.child("Passageiros").child(userId!!).setValue(passageiro)
-    }
-
-     */
-
     override fun salvandoPassageiroNoBancoDeDados(passageiro: Passageiro) {
         mDatabase!!.child("Passageiros").child(passageiro.id!!).setValue(passageiro)
     }
-
 
     override fun updatePassageiroNoBancoDeDados(passageiro: Passageiro) {
         TODO("Not yet implemented")

@@ -2,7 +2,7 @@ package com.example.corridafacil.authenticationFirebase.Utils
 
 import android.content.Context
 import android.content.Intent
-import com.example.corridafacil.Mapa.ui.MapsActivity
+import com.example.corridafacil.mapa.ui.MapsActivity
 
 
     fun Context.irParaPaginaDoMapa() = Intent(this, MapsActivity::class.java)
