@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import com.example.corridafacil.R
 
-class Alerts (private val activity: Activity){
+class AlertsSimpleDialog (private val activity: Activity){
 
 
     lateinit var dialog:AlertDialog
