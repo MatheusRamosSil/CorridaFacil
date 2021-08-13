@@ -1,6 +1,5 @@
-package com.example.corridafacil.Services.GoogleMapsService
+package com.example.corridafacil.Services.GoogleMapsService.Models
 
-import android.location.Location
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.GoogleMap
 
@@ -12,6 +11,6 @@ class MapApplication {
      lateinit var map: GoogleMap
 
     companion object Factory{
-        fun create():MapApplication = MapApplication()
+        fun create(): MapApplication = MapApplication()
     }
 }

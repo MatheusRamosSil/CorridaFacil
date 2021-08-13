@@ -2,20 +2,21 @@ package com.example.corridafacil.Services.GoogleMapsService
 
 import android.location.Location
 import android.util.Log
-import com.google.android.gms.location.FusedLocationProviderClient
+import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 
-class GoogleMapsService{
+class GoogleMapsService (private val mapApplication: MapApplication){
 
     private var lastKnownLocation: Location? = null
     val defaultLocation = LatLng(-33.8523341, 151.2106085)
 
-    fun getDeviceLocation(mapApplication:MapApplication) {
+    fun getDeviceLocation(googleMapsSeviceImp: GoogleMapsSeviceImp) {
         Log.i("Test device location","is a test location device")
         /*
-         * Get the best and most recent location of the device, which may be null in rare
+         * Get the best and most recent location of the device, which may be null in   rare
          * cases when a location is not available.
          */
         try {
@@ -26,34 +27,47 @@ class GoogleMapsService{
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.result
                             if (lastKnownLocation != null) {
-                                val myDeviceLocation = LatLng(
-                                    lastKnownLocation!!.latitude,
-                                    lastKnownLocation!!.longitude)
-
+                                val myDeviceLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+                                googleMapsSeviceImp.onSucess(myDeviceLocation)
                                 mapApplication.mMap.isMyLocationEnabled = true
-                               moverVisualizacaoParaALocazicaoDoDispositivo(myDeviceLocation,mapApplication)
                             }
                         } else {
-                            mostrarLocalizacaoPadrao(mapApplication)
+                            mostrarLocalizacaoPadrao()
                         }
                     }
             }
         } catch (e: SecurityException) {
-
+            googleMapsSeviceImp.onFailure(e.toString())
         }
     }
 
-    private fun moverVisualizacaoParaALocazicaoDoDispositivo( myDeviceLocation:LatLng,
-                                                              mapApplication: MapApplication){
-        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myDeviceLocation, 18f))
+    fun adicionarNovoPontoNoMapa(novoPonto:LatLng){
+        mapApplication.mMap.addMarker(MarkerOptions().position(novoPonto))
     }
 
-    private fun mostrarLocalizacaoPadrao(mapApplication: MapApplication){
+    fun moverVisualizacaoParaALocazicaoDoDispositivo( tamanhoDaVisualizacao:LatLngBounds){
+        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(tamanhoDaVisualizacao,25))
+    }
+
+    private fun mostrarLocalizacaoPadrao() {
         mapApplication.map.moveCamera(
             CameraUpdateFactory
                 .newLatLngZoom(defaultLocation, 15f))
         mapApplication.map.uiSettings?.isMyLocationButtonEnabled = false
     }
+
+    fun marcarVariosPontosNoMapa(multiplePoints: ArrayList<LatLng>): LatLngBounds {
+        val limitesDaVisulizacao = LatLngBounds.builder()
+        for (pontos:LatLng in multiplePoints){
+            limitesDaVisulizacao.include(pontos)
+            mapApplication.mMap.addMarker(MarkerOptions().position(pontos))
+        }
+        val tamanhoDaVisualizacao: LatLngBounds = limitesDaVisulizacao.build()
+        return tamanhoDaVisualizacao
+
+    }
+
+
 }
 
 
