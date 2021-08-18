@@ -11,7 +11,6 @@ import com.example.corridafacil.Services.GoogleAutocompletePlacesService.Models.
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
 import com.example.corridafacil.databinding.ActivityMapsBinding
-import com.example.corridafacil.mapa.Utils.ContantsMaps.GOOGLE_MAPS_API_KEY
 import com.example.corridafacil.mapa.Utils.Others.isLocationEnabled
 import com.example.corridafacil.mapa.Utils.permissions.Constantes.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
 import com.example.corridafacil.mapa.Utils.permissions.getLocationPermission
@@ -22,7 +21,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 
 
@@ -48,6 +46,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        mapApplication.context = this
 
         mapViewModel =
             ViewModelProvider(this, MapViewModelFactory(
@@ -79,13 +79,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapApplication.locationPermissionGranted = getLocationPermission()
         binding.viewmodel?.getDeviceLocation()
         inicilizeFramentAutocompletePlaces()
+
     }
 
     private fun inicilizeFramentAutocompletePlaces(){
         binding.viewmodel?.inicilizarAutocompletePlaces()
     }
-
-    private fun initializePlaces() = Places.initialize(applicationContext, GOOGLE_MAPS_API_KEY)
 
     private fun checkGPSEnabled(){
         if (!isLocationEnabled()){

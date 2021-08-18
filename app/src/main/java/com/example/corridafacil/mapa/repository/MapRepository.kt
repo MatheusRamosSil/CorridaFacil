@@ -14,7 +14,7 @@ class MapRepository(private var googleMapsService: GoogleMapsService,
        googleMapsService.getDeviceLocation(googleMapsSeviceImp)
     }
 
-    fun inicilizarAutocompletePlace(googleAutocompletePlaceServiceImp: GoogleAutocompletePlaceServiceImp){
+    fun inicilizarAutocompletePlace( googleAutocompletePlaceServiceImp: GoogleAutocompletePlaceServiceImp){
         googleAutocompletePlaceService.inicilizarAutocompletePlaces(googleAutocompletePlaceServiceImp)
     }
 
@@ -25,6 +25,10 @@ class MapRepository(private var googleMapsService: GoogleMapsService,
 
     fun moverVisualizacao(tamanhoDaVisualicao:LatLngBounds){
         googleMapsService.moverVisualizacaoParaALocazicaoDoDispositivo(tamanhoDaVisualicao)
+    }
+
+    fun marcarRotasNoMapa(origin:LatLng,destination:LatLng){
+        googleMapsService.criarRotas(origin,destination)
     }
 
     fun limintandoBuscaARegiaoDoDispositivo(locationDevice:LatLng){

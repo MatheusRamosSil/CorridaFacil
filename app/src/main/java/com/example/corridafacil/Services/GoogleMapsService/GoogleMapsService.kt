@@ -1,17 +1,22 @@
 package com.example.corridafacil.Services.GoogleMapsService
 
+import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
+import com.example.corridafacil.R
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
+import com.example.corridafacil.mapa.Utils.ContantsMaps.GOOGLE_MAPS_API_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 
+
 class GoogleMapsService (private val mapApplication: MapApplication){
 
     private var lastKnownLocation: Location? = null
     val defaultLocation = LatLng(-33.8523341, 151.2106085)
+
 
     fun getDeviceLocation(googleMapsSeviceImp: GoogleMapsSeviceImp) {
         Log.i("Test device location","is a test location device")
@@ -46,7 +51,7 @@ class GoogleMapsService (private val mapApplication: MapApplication){
     }
 
     fun moverVisualizacaoParaALocazicaoDoDispositivo( tamanhoDaVisualizacao:LatLngBounds){
-        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(tamanhoDaVisualizacao,25))
+        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(tamanhoDaVisualizacao,50))
     }
 
     private fun mostrarLocalizacaoPadrao() {
@@ -64,6 +69,10 @@ class GoogleMapsService (private val mapApplication: MapApplication){
         }
         val tamanhoDaVisualizacao: LatLngBounds = limitesDaVisulizacao.build()
         return tamanhoDaVisualizacao
+
+    }
+
+    fun criarRotas(origin:LatLng, destination:LatLng){
 
     }
 
