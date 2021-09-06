@@ -71,26 +71,22 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
     fun carregandoDispositivosProximos(myLoacationDevices:LatLng,raioDeBusca:Double){
 
-        val geofireInFirebase = GeofireInFirebase()
         val markersDriversHashMap = HashMap<String,Marker>()
 
-        geofireInFirebase.buscandoDispositivosProximos(GeoLocation(myLoacationDevices.latitude
-                                                       ,myLoacationDevices.longitude)
-                                                       ,raioDeBusca,object :GeoFireImp{
-                override fun succesOnLocationResul(key: String, location: GeoLocation?) {
+        mapRepository.loadingNearbyDriversDevices(myLoacationDevices,raioDeBusca, object : GeoFireImp{
+            override fun succesOnLocationResul(key: String, location: GeoLocation?) {
+                val marker = mapRepository.addPointInMap(LatLng(location!!.latitude,location.longitude))
+                markersDriversHashMap.put(key,marker)
+            }
 
-                     val marker = mapRepository.addPointInMap(LatLng(location!!.latitude,location.longitude))
-                    markersDriversHashMap.put(key,marker)
-                }
+            override fun onFailure(toString: String) {
+                Log.i("Error", toString)
+            }
 
-                override fun getKeyExited(keyExited: String) {
-                    mapRepository.removeMarkerInMarkerList(keyExited,markersDriversHashMap)
-                }
-
-                override fun onFailure(toString: String) {
-                    Log.i("Error", toString)
-                }
-            })
+            override fun getKeyExited(keyExited: String) {
+                mapRepository.removeMarkerInMarkerList(keyExited,markersDriversHashMap)
+            }
+        })
     }
 
 

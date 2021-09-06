@@ -3,6 +3,7 @@ package com.example.corridafacil.dao.Geofire
 import android.util.Log
 import com.example.corridafacil.dao.PassageiroDAO
 import com.firebase.geofire.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 
@@ -24,8 +25,8 @@ class GeofireInFirebase() : PassageiroDAO(){
     }
 
 
-    fun buscandoDispositivosProximos(myLocation:GeoLocation,raioDeBusca: Double, geofireImp: GeoFireImp){
-        val geoQuery =  geoFire.queryAtLocation(myLocation,raioDeBusca)
+    fun buscandoDispositivosProximos(myLocation:LatLng,raioDeBusca: Double, geofireImp: GeoFireImp){
+        val geoQuery =  geoFire.queryAtLocation(GeoLocation(myLocation.latitude,myLocation.longitude),raioDeBusca)
         val devicesLocations = ArrayList<GeoLocation>()
         geoQuery.addGeoQueryEventListener( object : GeoQueryEventListener{
             override fun onKeyEntered(key: String?, location: GeoLocation?) {

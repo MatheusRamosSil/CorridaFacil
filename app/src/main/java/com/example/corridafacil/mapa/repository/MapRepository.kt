@@ -4,6 +4,7 @@ import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleA
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsSeviceImp
+import com.example.corridafacil.dao.Geofire.GeoFireImp
 import com.example.corridafacil.dao.Geofire.GeofireInFirebase
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.model.LatLng
@@ -19,11 +20,13 @@ class MapRepository(private var googleMapsService: GoogleMapsService,
        googleMapsService.getDeviceLocation(googleMapsSeviceImp)
     }
 
+    fun loadingNearbyDriversDevices(myLocationDevice : LatLng, raioDeBusca: Double, geofireImp:GeoFireImp){
+        geofireInFirebase.buscandoDispositivosProximos(myLocationDevice,raioDeBusca, geofireImp)
+    }
 
     fun inicilizarAutocompletePlace( googleAutocompletePlaceServiceImp: GoogleAutocompletePlaceServiceImp){
         googleAutocompletePlaceService.inicilizarAutocompletePlaces(googleAutocompletePlaceServiceImp)
     }
-
 
     fun addPointInMap(newPoint:LatLng) = googleMapsService.adicionarNovoPontoNoMapa(newPoint)
 
