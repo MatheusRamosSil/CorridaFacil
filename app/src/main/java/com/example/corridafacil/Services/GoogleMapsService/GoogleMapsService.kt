@@ -1,15 +1,15 @@
 package com.example.corridafacil.Services.GoogleMapsService
 
-import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
-import com.example.corridafacil.R
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
-import com.example.corridafacil.mapa.Utils.ContantsMaps.GOOGLE_MAPS_API_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class GoogleMapsService (private val mapApplication: MapApplication){
@@ -46,8 +46,20 @@ class GoogleMapsService (private val mapApplication: MapApplication){
         }
     }
 
-    fun adicionarNovoPontoNoMapa(novoPonto:LatLng){
-        mapApplication.mMap.addMarker(MarkerOptions().position(novoPonto))
+    fun removerMarcadorEmUmaLista(key: String, hashMapMarker: HashMap<String,Marker>  ){
+            Log.i("Remove list", hashMapMarker.keys.toString())
+            val marker: Marker? = hashMapMarker.get(key)
+            marker?.remove()
+            hashMapMarker.remove(key)
+    }
+
+    fun adicionarNovoPontoNoMapa(novoPonto:LatLng): Marker{
+        return mapApplication.mMap.addMarker(MarkerOptions().position(novoPonto))
+    }
+
+    fun removerMarcardorDoMapa(marker: Marker){
+        Log.i("Marker Location", marker.position.toString())
+        marker.remove()
     }
 
     fun moverVisualizacaoParaALocazicaoDoDispositivo( tamanhoDaVisualizacao:LatLngBounds){
@@ -61,6 +73,7 @@ class GoogleMapsService (private val mapApplication: MapApplication){
         mapApplication.map.uiSettings?.isMyLocationButtonEnabled = false
     }
 
+
     fun marcarVariosPontosNoMapa(multiplePoints: ArrayList<LatLng>): LatLngBounds {
         val limitesDaVisulizacao = LatLngBounds.builder()
         for (pontos:LatLng in multiplePoints){
@@ -72,10 +85,9 @@ class GoogleMapsService (private val mapApplication: MapApplication){
 
     }
 
-    fun criarRotas(origin:LatLng, destination:LatLng){
-
+    fun cleaningMap() {
+       mapApplication.mMap.clear()
     }
-
 
 }
 

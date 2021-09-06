@@ -13,8 +13,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
-import io.reactivex.Completable
-import io.reactivex.Single
 
 
 class FirebaseStorageCloud {

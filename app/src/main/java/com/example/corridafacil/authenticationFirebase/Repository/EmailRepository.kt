@@ -1,7 +1,7 @@
 package com.example.corridafacil.authenticationFirebase.Repository
 
 import android.net.Uri
-import com.example.corridafacil.DAO.PassageiroDAO
+import com.example.corridafacil.dao.PassageiroDAO
 import com.example.corridafacil.Models.Passageiro
 import com.example.corridafacil.Services.AuthenticationFirebaseSevice.Models.AuthEmail
 import com.example.corridafacil.Services.AuthenticationFirebaseSevice.AuthFirebaseEmailCallbackImp

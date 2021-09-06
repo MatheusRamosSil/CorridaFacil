@@ -60,6 +60,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Incializa a variaval de localização do dispositivo(fusedLocationProviderClient)
         mapApplication.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
     }
 
 
@@ -93,7 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // [START maps_current_place_on_request_permissions_result]
-    override fun onRequestPermissionsResult(requestCode: Int,
+   override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>,
                                             grantResults: IntArray) {
         locationPermissionGranted = false
@@ -109,5 +110,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
+
     // [END maps_current_place_on_request_permissions_result]
 }
