@@ -3,6 +3,7 @@ package com.example.corridafacil.mapa.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.corridafacil.Services.APIWeb.Retrofit.RetrofitClient
 import com.example.corridafacil.dao.Geofire.GeoFireImp
 import com.example.corridafacil.dao.Geofire.GeofireInFirebase
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
@@ -28,8 +29,8 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
               mapStatusValue.postValue(true)
               limitesDaVisualizacao.include(myDeviceLocation)
               moverVisualizacaoDoMapa()
-              testGeofireImplements()
               carregandoDispositivosProximos(myDeviceLocation,20.0)
+              testCriarRotas(myDeviceLocation)
 
           }
 
@@ -37,6 +38,15 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
               errorMapsStatusValue.postValue(menssage)
           }
       })
+    }
+
+    private fun testCriarRotas(myDeviceLocation: LatLng) {
+        val meuDispositivo = myDeviceLocation.latitude.toString()+","+myDeviceLocation.longitude.toString()
+        val destinaiton = LatLng(-7.7480174,-37.6346628)
+        val outroLocal = destinaiton.latitude.toString()+","+destinaiton.longitude.toString()
+        Log.i("My device", meuDispositivo)
+        Log.i("My Destino", outroLocal)
+        mapRepository.addPolines(meuDispositivo,outroLocal)
     }
 
 
@@ -60,14 +70,6 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
     }
 
-    fun testGeofireImplements(){
-        var geofireInFirebase = GeofireInFirebase()
-        geofireInFirebase.saveDataLocationInFirebaseDataBase("device4", GeoLocation(-7.6347158,-37.8795776))
-        geofireInFirebase.saveDataLocationInFirebaseDataBase("device3", GeoLocation(-7.6346813,-37.8806587))
-        geofireInFirebase.saveDataLocationInFirebaseDataBase("device2", GeoLocation(-7.6347984,-37.8796987))
-        geofireInFirebase.saveDataLocationInFirebaseDataBase("device1", GeoLocation(-7.634065, -37.879855))
-
-    }
 
     fun carregandoDispositivosProximos(myLoacationDevices:LatLng,raioDeBusca:Double){
 

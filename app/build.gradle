@@ -123,4 +123,15 @@ dependencies {
     // GeoFire utililty functions for Cloud Firestore users who
     implementation 'com.firebase:geofire-android-common:3.1.0'
 
+
+    //Retrofit 2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+
+    //Gson
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+
+    // Maps Utils
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 }

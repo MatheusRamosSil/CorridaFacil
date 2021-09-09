@@ -1,15 +1,21 @@
 package com.example.corridafacil.Services.GoogleMapsService
 
+import android.graphics.Color
 import android.location.Location
 import android.util.Log
+import com.example.corridafacil.Services.APIWeb.Retrofit.Models.DirectionResponses
+import com.example.corridafacil.Services.APIWeb.Retrofit.RetrofitClient
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
+import com.example.corridafacil.mapa.Utils.ContantsMaps.GOOGLE_MAPS_API_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.maps.android.PolyUtil
+import retrofit2.Response
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import com.google.android.gms.maps.model.PolylineOptions
+import retrofit2.Call
+import retrofit2.Callback
 
 
 class GoogleMapsService (private val mapApplication: MapApplication){
@@ -73,20 +79,37 @@ class GoogleMapsService (private val mapApplication: MapApplication){
         mapApplication.map.uiSettings?.isMyLocationButtonEnabled = false
     }
 
+    fun cleaningMap() {
+       mapApplication.mMap.clear()
+    }
 
-    fun marcarVariosPontosNoMapa(multiplePoints: ArrayList<LatLng>): LatLngBounds {
-        val limitesDaVisulizacao = LatLngBounds.builder()
-        for (pontos:LatLng in multiplePoints){
-            limitesDaVisulizacao.include(pontos)
-            mapApplication.mMap.addMarker(MarkerOptions().position(pontos))
+    fun drawPolyline(response: Response<DirectionResponses>) {
+        val shape = response.body()?.routes?.get(0)?.overviewPolyline?.points
+        if (shape != null){
+            val polyline = PolylineOptions()
+                .addAll(PolyUtil.decode(shape))
+                .width(8f)
+                .color(Color.RED)
+            mapApplication.mMap.addPolyline(polyline)
         }
-        val tamanhoDaVisualizacao: LatLngBounds = limitesDaVisulizacao.build()
-        return tamanhoDaVisualizacao
 
     }
 
-    fun cleaningMap() {
-       mapApplication.mMap.clear()
+    fun criarRotas(origem:String,destino:String){
+        val apiServices = RetrofitClient.apiServices(mapApplication.context)
+        apiServices.getDirections(origem,destino,GOOGLE_MAPS_API_KEY)
+            .enqueue(object : Callback<DirectionResponses>{
+                override fun onResponse(call: Call<DirectionResponses>,
+                                        response: Response<DirectionResponses>
+                ) {
+                    drawPolyline(response)
+                    Log.i("Response mensage", response.body()?.routes.toString())
+                }
+
+                override fun onFailure(call: Call<DirectionResponses>, t: Throwable) {
+                    Log.i("Error routes", t.localizedMessage)
+                }
+            })
     }
 
 }

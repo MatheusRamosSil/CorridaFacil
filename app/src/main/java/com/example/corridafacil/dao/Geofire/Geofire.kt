@@ -24,7 +24,7 @@ class GeofireInFirebase() : PassageiroDAO(){
         })
     }
 
-
+    // raioDeBusca distancia em KM
     fun buscandoDispositivosProximos(myLocation:LatLng,raioDeBusca: Double, geofireImp: GeoFireImp){
         val geoQuery =  geoFire.queryAtLocation(GeoLocation(myLocation.latitude,myLocation.longitude),raioDeBusca)
         val devicesLocations = ArrayList<GeoLocation>()
@@ -50,20 +50,6 @@ class GeofireInFirebase() : PassageiroDAO(){
             override fun onGeoQueryError(error: DatabaseError?) {
                 Log.i("Error verify","There was an error with this query: " + error)
                 geofireImp.onFailure(error.toString())
-
-            }
-        })
-    }
-
-
-    fun getLocationDevices(key:String){
-
-        geoFire.getLocation(key, object : LocationCallback{
-            override fun onLocationResult(key: String?, location: GeoLocation?) {
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError?) {
 
             }
         })
