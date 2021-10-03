@@ -24,7 +24,7 @@ open class PassageiroDAO : PassageiroDAOImp{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 val post = dataSnapshot.getValue().toString()
-                resultImp.onSuccess(post)
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

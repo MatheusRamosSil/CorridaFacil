@@ -1,8 +1,8 @@
-package com.example.corridafacil.Services.APIWeb.Retrofit.Models
+package com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models
 
 import com.google.gson.annotations.SerializedName
 
-data class Southwest(
+data class Northeast(
     @SerializedName("lat")
     var lat: Double?,
     @SerializedName("lng")

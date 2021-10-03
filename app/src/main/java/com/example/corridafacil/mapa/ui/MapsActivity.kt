@@ -2,10 +2,12 @@ package com.example.corridafacil.mapa.ui
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.corridafacil.Components.Alerts.exibirAlertaDeCofiguracoesDeGPS
 import com.example.corridafacil.R
+import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceService
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.Models.PlacesApplication
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
@@ -53,7 +55,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ViewModelProvider(this, MapViewModelFactory(
                 MapRepository(
                     GoogleMapsService(mapApplication),
-                    GoogleAutocompletePlaceService(autocompleteSupportFragment,placesApplication)
+                    GoogleAutocompletePlaceService(autocompleteSupportFragment,placesApplication),
+                    DirectionsRoutesServices(mapApplication)
                 )
             )).get(MapsViewModel::class.java)
         binding.viewmodel = mapViewModel
@@ -72,6 +75,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         binding.viewmodel?.getDeviceLocation()
+        inicilizeFramentAutocompletePlaces()
         super.onResume()
     }
 
@@ -79,8 +83,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapApplication.mMap=googleMap
         mapApplication.locationPermissionGranted = getLocationPermission()
         binding.viewmodel?.getDeviceLocation()
-        inicilizeFramentAutocompletePlaces()
-
     }
 
     private fun inicilizeFramentAutocompletePlaces(){

@@ -1,6 +1,9 @@
 package com.example.corridafacil.mapa.repository
 
-import com.example.corridafacil.Services.APIWeb.Retrofit.Models.DirectionResponses
+import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesImp
+import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
+import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
+import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceService
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
@@ -13,8 +16,11 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import retrofit2.Response
 
-class MapRepository(private var googleMapsService: GoogleMapsService,
-                    private var googleAutocompletePlaceService: GoogleAutocompletePlaceService) {
+class MapRepository(
+    private var googleMapsService: GoogleMapsService,
+    private var googleAutocompletePlaceService: GoogleAutocompletePlaceService,
+    private var directionsRoutesServices: DirectionsRoutesServices
+) {
 
     var geofireInFirebase = GeofireInFirebase()
 
@@ -37,9 +43,18 @@ class MapRepository(private var googleMapsService: GoogleMapsService,
         googleMapsService.moverVisualizacaoParaALocazicaoDoDispositivo(tamanhoDaVisualicao)
     }
 
-    fun addPolines(origem:String,destino:String){
-        googleMapsService.criarRotas(origem, destino)
+    fun initRoutes(inputDataRoutes: InputDataRoutes, directionsRoutesImp:DirectionsRoutesImp){
+        directionsRoutesServices.createRoutes(inputDataRoutes,directionsRoutesImp)
     }
+
+    fun getMultiplesRoutes(response: Response<DirectionResponses>){
+        directionsRoutesServices.showMultiplesRoutes(response)
+    }
+
+    fun getRoute(response: Response<DirectionResponses>){
+        directionsRoutesServices.showRoute(response)
+    }
+
     fun clearMap() {
         googleMapsService.cleaningMap()
     }

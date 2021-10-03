@@ -1,8 +1,8 @@
-package com.example.corridafacil.Services.APIWeb.Retrofit.Models
+package com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models
 
 import com.google.gson.annotations.SerializedName
 
-data class OverviewPolyline(
+data class Polyline(
     @SerializedName("points")
     var points: String?
 )
