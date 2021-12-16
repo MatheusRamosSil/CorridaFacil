@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_login3.xml" value="0.1" />
         <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_register_form01.xml" value="0.1" />
         <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_register_form02.xml" value="0.16" />
+        <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_register_form03.xml" value="0.1" />
       </map>
     </option>
   </component>
