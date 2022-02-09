@@ -3,7 +3,7 @@ package com.example.corridafacil.dao
 import android.util.Log
 import com.example.corridafacil.dao.Implementations.PassageiroDAOImp
 import com.example.corridafacil.dao.Implementations.ResultImp
-import com.example.corridafacil.Models.Passageiro
+import com.example.corridafacil.models.Passageiro
 import com.google.firebase.database.*
 
 

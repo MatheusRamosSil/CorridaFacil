@@ -1,82 +1,90 @@
 package com.example.corridafacil.authenticationFirebase.viewModel
 
 import android.net.Uri
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.corridafacil.Models.Passageiro
-import com.example.corridafacil.Services.AuthenticationFirebaseSevice.Models.AuthEmail
-import com.example.corridafacil.Services.AuthenticationFirebaseSevice.AuthFirebaseEmailCallbackImp
-import com.example.corridafacil.authenticationFirebase.Repository.EmailRepository
-import com.example.corridafacil.authenticationFirebase.data.FirebaseStorageCallbackImp
+import androidx.lifecycle.viewModelScope
+import com.example.corridafacil.authenticationFirebase.repository.email.EmailRepository
+import com.example.corridafacil.models.Passageiro
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.lang.Exception
 
-class EmailViewModel(private val emailViewModelRepository: EmailRepository): ViewModel() {
+class EmailViewModel(private val emailRepository: EmailRepository): ViewModel() {
 
-    var passageiro = Passageiro.create()
-    lateinit var imagemEscolhida:Uri
-    var uidUser = "path uid"
-    var urlImage = "path url"
-    var authEmail = AuthEmail.create()
-    var valorDeStatusLogin = MutableLiveData<String>()
-    var errorStatusLogin = MutableLiveData<String>()
+    private lateinit var tokenFirebase : String
+    val _state = MutableStateFlow<Result>(Result.Empty)
+    val stateUI : StateFlow<Result> = _state
 
-    fun register(){
-        authEmail.email = passageiro.email.toString()
-        authEmail.password = passageiro.senha.toString()
+    var addValuesToOneNewUser = HashMap<String,String>()
 
-        emailViewModelRepository.register(object : AuthFirebaseEmailCallbackImp{
-            override fun getUidUser(uid: String) {
-                uidUser = uid
-                savePassengerInDataBase()
-                Log.i("Id return", "uid my user: "+uid)
-            }
-
-            override fun onSuccess() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onFailure(menssage: Exception?) {
-                TODO("Not yet implemented")
-            }
-
-        },authEmail)
-
+    init {
+        viewModelScope.async {
+            tokenFirebase = emailRepository.generateNewTokenFCM()
+        }
     }
 
-    fun login(){
-        emailViewModelRepository.loginEmail(object : AuthFirebaseEmailCallbackImp{
-            override fun getUidUser(uid: String) {
-                valorDeStatusLogin.postValue(uid)
-            }
 
-            override fun onSuccess() {
-
-            }
-
-            override fun onFailure(menssage: Exception?) {
-                errorStatusLogin.postValue(menssage?.message.toString())
-            }
-
-        },authEmail)
+    fun checkEmailIsVerifiead(){
+        try {
+            val result = checkUserAuthenticated()!!.isEmailVerified
+            _state.value = Result.Success(result)
+        }catch (exception : Exception){ }
     }
 
-    fun fazerUploadDaImagemEPegarAUrl() {
-        emailViewModelRepository.fazerUploadDaImagemEPegarAUrl(object :FirebaseStorageCallbackImp{
-            override fun pegarAUrlAposUplaod(urlDaImagem: String) {
-                urlImage = urlDaImagem
-                Log.i("Return url", "my url "+ urlDaImagem)
-            }
-
-        },imagemEscolhida)
+    fun checkUserAuthenticated(): FirebaseUser? {
+        return emailRepository.userAuthenticated()
     }
 
-    fun savePassengerInDataBase(){
-        Log.i("Teste values", " my uid :" + uidUser+" my url :"+urlImage)
-        passageiro.id = uidUser
-        emailViewModelRepository.salvandoUmNovoPassageiroNoBancoDeDados(passageiro)
+    fun logout(){
+        emailRepository.logout()
+    }
+
+    fun login(emailUser: String, password: String) {
+        viewModelScope.async {
+            _state.value = emailRepository.singEmailPassword(emailUser,password)
+        }
+    }
+
+    fun forgotPassword(emailUser: String){
+        val result = emailRepository.sendPasswordResetEmail(emailUser)
+        _state.value = Result.Success(result)
+    }
+
+    fun register(uriImage:Uri ,email:String, password: String){
+        viewModelScope.async {
+            try {
+                val uid = emailRepository.createNewRegister(email, password)
+                _state.value = Result.Success(true)
+                val url = emailRepository.updateImageProfile(uriImage,uid)
+                val newUser = createNewUser(uid,url,true)
+                emailRepository.saveNewUserInRealTimeDataBase(newUser)
+                emailRepository.sendEmailVerification()
+            }catch (error : Exception){
+                _state.value = Result.Error(error)
+            }
+        }
+    }
+
+    fun createNewUser(uidUser: String,urlDaImagem: String,statusActivated : Boolean): Passageiro {
+        addValuesToOneNewUser.put("uidUser",uidUser)
+        addValuesToOneNewUser.put("urlDaFoto",urlDaImagem)
+        addValuesToOneNewUser.put("token",tokenFirebase)
+        return ResgitrationViewParams(addValuesToOneNewUser,statusActivated).create()
+
     }
 
 }
+
+sealed class Result{
+    data class Success(val status: Boolean) : Result()
+    data class Error(val exception: Exception) : Result()
+    object Empty: Result()
+
+}
+
+
+
 
 

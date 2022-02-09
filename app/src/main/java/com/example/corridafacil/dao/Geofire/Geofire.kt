@@ -8,11 +8,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 
 
-class GeofireInFirebase() : PassageiroDAO(){
+class GeofireInFirebase() {
     var referenceDataBaseFirebase = FirebaseDatabase.getInstance().getReference("Location")
     var geoFire = GeoFire(referenceDataBaseFirebase)
 
-    fun saveDataLocationInFirebaseDataBase(key:String,location: GeoLocation){
+    fun saveDataLocationInFirebaseDataBase(key:String?,location: GeoLocation){
         geoFire.setLocation(key, location, object : GeoFire.CompletionListener{
             override fun onComplete(key: String?, error: DatabaseError?) {
                 if (error != null){
@@ -22,6 +22,10 @@ class GeofireInFirebase() : PassageiroDAO(){
                 }
             }
         })
+    }
+
+    fun removeLocationDevice(key: String?){
+        geoFire.removeLocation(key)
     }
 
     // raioDeBusca distancia em KM

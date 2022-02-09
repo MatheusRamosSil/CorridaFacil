@@ -12,11 +12,14 @@ import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleA
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.Models.PlacesApplication
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
+import com.example.corridafacil.dao.Geofire.GeofireInFirebase
 import com.example.corridafacil.databinding.ActivityMapsBinding
+import com.example.corridafacil.mapa.Utils.Others.ManageSettingsLocation
 import com.example.corridafacil.mapa.Utils.Others.isLocationEnabled
 import com.example.corridafacil.mapa.Utils.permissions.Constantes.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
 import com.example.corridafacil.mapa.Utils.permissions.getLocationPermission
 import com.example.corridafacil.mapa.repository.MapRepository
+import com.example.corridafacil.mapa.repository.MapRepositoryImpl
 import com.example.corridafacil.mapa.viewModel.MapViewModelFactory
 import com.example.corridafacil.mapa.viewModel.MapsViewModel
 import com.google.android.gms.location.LocationServices
@@ -32,6 +35,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
     lateinit var mapViewModel: MapsViewModel
     var mapApplication = MapApplication.create()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,24 +53,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
+
         mapApplication.context = this
 
         mapViewModel =
             ViewModelProvider(this, MapViewModelFactory(
-                MapRepository(
+                MapRepositoryImpl(
                     GoogleMapsService(mapApplication),
                     GoogleAutocompletePlaceService(autocompleteSupportFragment,placesApplication),
-                    DirectionsRoutesServices(mapApplication)
+                    DirectionsRoutesServices(mapApplication),
+                    ManageSettingsLocation(mapApplication),
+                    GeofireInFirebase()
                 )
-            )).get(MapsViewModel::class.java)
+            )
+            ).get(MapsViewModel::class.java)
         binding.viewmodel = mapViewModel
 
         // Incializa a variaval de localização do dispositivo(fusedLocationProviderClient)
         mapApplication.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
     }
-
-
 
     override fun onStart() {
         checkGPSEnabled()
@@ -74,19 +80,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onResume() {
-        binding.viewmodel?.getDeviceLocation()
-        inicilizeFramentAutocompletePlaces()
+        mapViewModel.updateLocationDevice()
         super.onResume()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mapApplication.mMap=googleMap
         mapApplication.locationPermissionGranted = getLocationPermission()
-        binding.viewmodel?.getDeviceLocation()
+        mapViewModel.updateLocationDevice()
+       // mapViewModel.getDeviceLocation()
+        inicilizeFramentAutocompletePlaces()
+
+    }
+
+    override fun onStop() {
+        mapViewModel.removeLocationDeviceInGeoFireDatabase()
+        super.onStop()
     }
 
     private fun inicilizeFramentAutocompletePlaces(){
-        binding.viewmodel?.inicilizarAutocompletePlaces()
+        mapViewModel.inicilizarAutocompletePlaces()
     }
 
     private fun checkGPSEnabled(){
@@ -99,6 +112,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
    override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>,
                                             grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         locationPermissionGranted = false
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {

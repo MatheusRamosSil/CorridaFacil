@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.corridafacil">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,22 +16,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CorridaFacil">
-        <activity android:name=".authenticationFirebase.ui.Register.SegundoFormulario" />
-        <activity android:name=".authenticationFirebase.ui.Register.PrimeiroFormulario" />
-        <activity android:name=".authenticationFirebase.ui.Register.TerceiroFormulario" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity
-            android:name=".mapa.ui.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".MainActivity" />
+            android:name=".authenticationFirebase.ui.ForgoutPassword"
+            android:exported="false" />
         <activity
-            android:name=".authenticationFirebase.ui.LoginActivity"
+            android:name=".authenticationFirebase.ui.Login"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.CorridaFacil.NoActionBar">
+            android:theme="@style/Theme.CorridaFacil.NoActionBar"
+            tools:ignore="AppLinkUrlError">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -38,6 +32,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".authenticationFirebase.ui.register.FormAddEmail"
+            android:exported="false"
+            android:label="@string/title_activity_form_add_email"
+            android:theme="@style/Theme.CorridaFacil" />
+        <activity
+            android:name=".authenticationFirebase.ui.register.FormAddCodeSms"
+            android:exported="false"
+            android:label="@string/title_activity_form_add_code_sms"
+            android:theme="@style/Theme.CorridaFacil" />
+        <activity
+            android:name=".authenticationFirebase.ui.register.FormAddPhone"
+            android:exported="false"
+            android:label="@string/title_activity_form_add_phone"
+            android:theme="@style/Theme.CorridaFacil" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA9RZYO-8Ji-TfZEI4x-ekpTKeuM7MKQ4g" />
+
+        <activity
+            android:name=".mapa.ui.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.CorridaFacil.NoActionBar" />
+        <activity android:name=".MainActivity" />
 
         <service
             android:name=".Services.FirebaseMenssaging.FirebaseMenssagingServices"

@@ -57,6 +57,7 @@ class DirectionsRoutesServices (private val mapApplication: MapApplication){
 
     fun showRoute(response: Response<DirectionResponses>){
         val result = response.body()?.routes?.get(0)?.overviewPolyline?.points
+        response.body()?.routes?.get(0)?.overviewPolyline?.points
         drawPolyline(result)
     }
 
@@ -72,8 +73,5 @@ class DirectionsRoutesServices (private val mapApplication: MapApplication){
             mapApplication.mMap.addPolyline(polyline)
         }
     }
-
-
-
 
 }

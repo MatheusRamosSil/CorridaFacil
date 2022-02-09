@@ -13,12 +13,16 @@ import com.example.corridafacil.mapa.Utils.ContantsMaps
 import com.example.corridafacil.mapa.Utils.Others.ConvertData
 import com.example.corridafacil.mapa.repository.MapRepository
 import com.firebase.geofire.GeoLocation
-import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.model.Place
+import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Response
+import java.lang.Exception
 
 class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
@@ -26,7 +30,35 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
     var errorMapsStatusValue = MutableLiveData<String>()
     var limitesDaVisualizacao = LatLngBounds.builder()
     lateinit var minhaLocalizacao : LatLng
+    private val resultLocationRequest: LocationRequest
 
+   init{
+       resultLocationRequest = mapRepository.createLocationRequest()
+    }
+
+    private val locationCallback = object : LocationCallback(){
+        override fun onLocationResult(p0: LocationResult) {
+            minhaLocalizacao = LatLng(p0.lastLocation.latitude,p0.lastLocation.longitude)
+            saveDataLocationsInGeoFire(minhaLocalizacao)
+            mapRepository.addMakerInLocationDevice(minhaLocalizacao)
+
+        }
+    }
+
+    fun updateLocationDevice(){
+        mapRepository.startLocationUpdates(resultLocationRequest,locationCallback)
+    }
+
+    fun saveDataLocationsInGeoFire(deviceLocation: LatLng){
+        val locationDeviceInGeoFire = GeoLocation(deviceLocation.latitude,deviceLocation.longitude)
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid
+        mapRepository.saveDataInDatabaseGeoFire(userUID,locationDeviceInGeoFire)
+    }
+
+    fun removeLocationDeviceInGeoFireDatabase(){
+        val userUID = FirebaseAuth.getInstance().currentUser?.uid
+        mapRepository.removeLocationDeviceInGeofire(userUID)
+    }
 
     fun getDeviceLocation() {
       mapRepository.getLocationDevice(object : GoogleMapsSeviceImp {
@@ -83,7 +115,10 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
                 }
             }
 
-            override fun onError(status: Status) {
+            override fun getAdress(adress: String) {
+                Log.w("Places adress", adress)
+            }
+            override fun onError(status: Exception) {
 
             }
         })

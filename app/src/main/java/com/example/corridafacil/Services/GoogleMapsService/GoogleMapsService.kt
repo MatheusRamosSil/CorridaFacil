@@ -1,20 +1,12 @@
 package com.example.corridafacil.Services.GoogleMapsService
 
-import android.graphics.Color
+import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
-import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
-import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.APIServices.RetrofitClient
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
-import com.example.corridafacil.mapa.Utils.ContantsMaps.GOOGLE_MAPS_API_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.PolyUtil
-import retrofit2.Response
 import kotlin.collections.HashMap
-import com.google.android.gms.maps.model.PolylineOptions
-import retrofit2.Call
-import retrofit2.Callback
 
 
 open class GoogleMapsService (private val mapApplication: MapApplication){
@@ -23,6 +15,7 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
     val defaultLocation = LatLng(-33.8523341, 151.2106085)
 
 
+    @SuppressLint("MissingPermission")
     fun getDeviceLocation(googleMapsSeviceImp: GoogleMapsSeviceImp) {
         Log.i("Test device location","is a test location device")
         /*
@@ -33,18 +26,18 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
             if (mapApplication.locationPermissionGranted == true) {
                 val locationResult = mapApplication.fusedLocationProviderClient?.lastLocation
                 locationResult.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            // Set the map's camera position to the current location of the device.
-                            lastKnownLocation = task.result
-                            if (lastKnownLocation != null) {
-                                val myDeviceLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
-                                googleMapsSeviceImp.onSucess(myDeviceLocation)
-                                mapApplication.mMap.isMyLocationEnabled = true
-                            }
-                        } else {
-                            mostrarLocalizacaoPadrao()
+                    if (task.isSuccessful) {
+                        // Set the map's camera position to the current location of the device.
+                        lastKnownLocation = task.result
+                        if (lastKnownLocation != null) {
+                            val myDeviceLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+                            googleMapsSeviceImp.onSucess(myDeviceLocation)
+                            mapApplication.mMap.isMyLocationEnabled = true
                         }
+                    } else {
+                        mostrarLocalizacaoPadrao()
                     }
+                }
             }
         } catch (e: SecurityException) {
             googleMapsSeviceImp.onFailure(e.toString())
@@ -58,6 +51,12 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
             hashMapMarker.remove(key)
     }
 
+    @SuppressLint("MissingPermission")
+    fun addMarkerInLocationDevice(deviceLocation:LatLng){
+        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation,18f))
+        mapApplication.mMap.isMyLocationEnabled = true
+    }
+
     fun adicionarNovoPontoNoMapa(novoPonto:LatLng): Marker{
         return mapApplication.mMap.addMarker(MarkerOptions().position(novoPonto))
     }
@@ -68,7 +67,7 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
     }
 
     fun moverVisualizacaoParaALocazicaoDoDispositivo( tamanhoDaVisualizacao:LatLngBounds){
-        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(tamanhoDaVisualizacao,50))
+        mapApplication.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(tamanhoDaVisualizacao, 10))
     }
 
     private fun mostrarLocalizacaoPadrao() {

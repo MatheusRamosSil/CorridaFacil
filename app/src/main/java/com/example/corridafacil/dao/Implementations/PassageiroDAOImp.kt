@@ -1,6 +1,6 @@
 package com.example.corridafacil.dao.Implementations
 
-import com.example.corridafacil.Models.Passageiro
+import com.example.corridafacil.models.Passageiro
 
 interface PassageiroDAOImp {
     fun salvandoPassageiroNoBancoDeDados(passageiro: Passageiro)

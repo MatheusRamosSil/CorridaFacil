@@ -3,10 +3,61 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_login3.xml" value="0.1" />
-        <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_register_form01.xml" value="0.1" />
-        <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_register_form02.xml" value="0.16" />
-        <entry key="..\:/CorridaFacil/app/src/main/res/layout/activity_register_form03.xml" value="0.1" />
+        <entry key="../../../../../../../layout/compose-model-1644085234087.xml" value="0.33" />
+        <entry key="../../../../../../../layout/compose-model-1644090278415.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644090976237.xml" value="0.25" />
+        <entry key="../../../../../../../layout/compose-model-1644150253347.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644235580145.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644236652514.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644236931845.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644236987083.xml" value="0.29940878378378377" />
+        <entry key="../../../../../../../layout/compose-model-1644237016798.xml" value="0.29940878378378377" />
+        <entry key="../../../../../../../layout/compose-model-1644237430314.xml" value="0.1701858108108108" />
+        <entry key="../../../../../../../layout/compose-model-1644237800249.xml" value="1.0" />
+        <entry key="../../../../../../../layout/compose-model-1644237833772.xml" value="0.33" />
+        <entry key="../../../../../../../layout/compose-model-1644239144404.xml" value="1.0" />
+        <entry key="../../../../../../../layout/compose-model-1644241274894.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644245256355.xml" value="0.1701858108108108" />
+        <entry key="../../../../../../../layout/compose-model-1644246874469.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644247583090.xml" value="0.1" />
+        <entry key="../../../../../../../layout/compose-model-1644247995891.xml" value="0.1" />
+        <entry key="../../../../../../../layout/compose-model-1644256230542.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644257099775.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644263216050.xml" value="1.0" />
+        <entry key="../../../../../../../layout/compose-model-1644264702327.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644264801192.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644264982630.xml" value="0.33" />
+        <entry key="../../../../../../../layout/compose-model-1644265012662.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644318761046.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644319645221.xml" value="0.33" />
+        <entry key="../../../../../../../layout/compose-model-1644322603922.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644323122562.xml" value="0.33" />
+        <entry key="../../../../../../../layout/compose-model-1644327000115.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644327451616.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644329415956.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644329681290.xml" value="1.0" />
+        <entry key="../../../../../../../layout/compose-model-1644330128220.xml" value="0.2" />
+        <entry key="../../../../../../../layout/compose-model-1644346687744.xml" value="0.31165540540540543" />
+        <entry key="../../../../../../../layout/compose-model-1644410031262.xml" value="0.31165540540540543" />
+        <entry key="app/src/main/res/layout/activity_forgout.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_form_add_code_sms.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_form_add_email.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_form_add_phone.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_login3.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.23777173913043478" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.23777173913043478" />
+        <entry key="app/src/main/res/layout/activity_register_form01.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/activity_register_form02.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/alert_load_sms.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.21388888888888888" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.21388888888888888" />
+        <entry key="app/src/main/res/layout/form_add_code_sms.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.21388888888888888" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.21388888888888888" />
+        <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.21388888888888888" />
+        <entry key="app/src/main/res/layout/main_activity.xml" value="0.21388888888888888" />
+        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.21388888888888888" />
       </map>
     </option>
   </component>
