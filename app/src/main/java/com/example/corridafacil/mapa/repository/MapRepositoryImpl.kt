@@ -1,6 +1,6 @@
 package com.example.corridafacil.mapa.repository
 
-import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesImp
+import androidx.lifecycle.MutableLiveData
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
@@ -60,15 +60,15 @@ class MapRepositoryImpl(
         googleMapsService.moverVisualizacaoParaALocazicaoDoDispositivo(tamanhoDaVisualicao)
     }
 
-    override fun initRoutes(inputDataRoutes: InputDataRoutes, directionsRoutesImp:DirectionsRoutesImp){
-        directionsRoutesServices.createRoutes(inputDataRoutes,directionsRoutesImp)
+    override suspend fun initRoutes(inputDataRoutes: InputDataRoutes): DirectionResponses? {
+        return directionsRoutesServices.createRoutes(inputDataRoutes)
     }
 
     override fun getMultiplesRoutes(response: Response<DirectionResponses>){
         directionsRoutesServices.showMultiplesRoutes(response)
     }
 
-    override fun getRoute(response: Response<DirectionResponses>){
+    override fun getRoute(response: DirectionResponses?){
         directionsRoutesServices.showRoute(response)
     }
 

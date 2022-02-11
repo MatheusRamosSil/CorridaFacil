@@ -3,12 +3,10 @@ package com.example.corridafacil.mapa.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesImp
-import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
+import androidx.lifecycle.viewModelScope
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
 import com.example.corridafacil.models.Geofire.GeoFireImp
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
-import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsSeviceImp
 import com.example.corridafacil.mapa.Utils.ContantsMaps
 import com.example.corridafacil.mapa.Utils.Others.ConvertData
 import com.example.corridafacil.mapa.repository.MapRepository
@@ -21,7 +19,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.model.Place
 import com.google.firebase.auth.FirebaseAuth
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
@@ -60,23 +58,6 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
         mapRepository.removeLocationDeviceInGeofire(userUID)
     }
 
-    fun getDeviceLocation() {
-      mapRepository.getLocationDevice(object : GoogleMapsSeviceImp {
-          override fun onSucess(myDeviceLocation: LatLng) {
-              limitesDaVisualizacao.include(myDeviceLocation)
-              minhaLocalizacao = myDeviceLocation
-              saveDataLocationsInGeoFire(minhaLocalizacao)
-              moverVisualizacaoDoMapa()
-
-
-          }
-
-          override fun onFailure(menssage: String) {
-              errorMapsStatusValue.postValue(menssage)
-          }
-      })
-    }
-
     private fun inicializarRotas(pontoPartida: LatLng, pontoChegada: LatLng?) {
 
         val inputDataRoutes = InputDataRoutes.create()
@@ -85,23 +66,28 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
         inputDataRoutes.modeDriving = "driving"
         inputDataRoutes.rotasAlternativas = true
 
-            mapRepository.initRoutes(inputDataRoutes,object : DirectionsRoutesImp{
-                    override fun onSuccess(response: Response<DirectionResponses>) {
-                        //mapRepository.getMultiplesRoutes(response)
-                        mapRepository.getRoute(response)
-                    }
+        viewModelScope.launch {
+            try {
+                val resultRoutes = mapRepository.initRoutes(inputDataRoutes)
 
-                    override fun onFailure(localizedMessage: String?) {
-                        Log.i("Error routes", localizedMessage.toString())
-                    }
-                })
+                mapRepository.getRoute(resultRoutes)
 
+                val viewSizeNortheast = LatLng(resultRoutes?.routes?.get(0)?.bounds?.northeast?.lat!!,
+                                               resultRoutes.routes?.get(0)?.bounds?.northeast?.lng!!)
 
+                val viewSizeSouthwest = LatLng(resultRoutes.routes?.get(0)?.bounds?.southwest?.lat!!,
+                                               resultRoutes.routes?.get(0)?.bounds?.southwest?.lng!!)
+
+                moverVisualizacaoDoMapa(viewSizeSouthwest,viewSizeNortheast)
+            }catch (exception : Exception){
+                Log.w("Error load routes", exception.message.toString())
+            }
+        }
     }
 
 
-    fun moverVisualizacaoDoMapa() {
-        val tamanhoDaVisualizacao: LatLngBounds = limitesDaVisualizacao.build()
+    fun moverVisualizacaoDoMapa( viewSizeSouthwest: LatLng, viewSizeNortheast: LatLng) {
+        val tamanhoDaVisualizacao = LatLngBounds(viewSizeSouthwest,viewSizeNortheast)
         mapRepository.moverVisualizacao(tamanhoDaVisualizacao)
     }
 
@@ -110,7 +96,6 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
             override fun onSuccess(place: Place) {
                 mapRepository.clearMap()
                 limitesDaVisualizacao.include(place.latLng)
-                moverVisualizacaoDoMapa()
                 place.latLng?.let { mapRepository.addPointInMap(it)
                                      inicializarRotas(minhaLocalizacao,it)
                 }

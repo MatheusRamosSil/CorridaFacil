@@ -13,7 +13,7 @@ import java.util.*
 
 class GoogleAutocompletePlaceService(private val autocompleteSupportFragment: AutocompleteSupportFragment,
                                      private val placesApplication: PlacesApplication){
-    private lateinit var localSelecionado: String
+
     private var tiposdeDadosRetornados = Arrays.asList(Place.Field.ID,
                                                 Place.Field.NAME,
                                                 Place.Field.ADDRESS,
@@ -22,8 +22,6 @@ class GoogleAutocompletePlaceService(private val autocompleteSupportFragment: Au
 
     fun inicilizarAutocompletePlaces(googleAutocompletePlaceServiceImp: GoogleAutocompletePlaceServiceImp){
         placesApplication.initilizePlaces()
-        val placeCLient = placesApplication.createPlaces()
-        val token = AutocompleteSessionToken.newInstance()
         val codeISOCountry = Locale.getDefault().country
 
         autocompleteSupportFragment.setPlaceFields(tiposdeDadosRetornados)
@@ -39,27 +37,6 @@ class GoogleAutocompletePlaceService(private val autocompleteSupportFragment: Au
                 Log.i("TAG", "An error occurred: $status")
             }
         })
-        /*
-        val request = FindAutocompletePredictionsRequest.builder()
-            .setOrigin(LatLng(-7.6348534,-37.8756945))
-            .setCountries("BR")
-            .setTypeFilter(TypeFilter.ADDRESS)
-            .setQuery(localSelecionado)
-            .setSessionToken(token)
-            .build()
-        placeCLient.findAutocompletePredictions(request)
-            .addOnSuccessListener { response ->
-                val prediction = response
-                googleAutocompletePlaceServiceImp.getAdress(prediction.autocompletePredictions.get(0).getPrimaryText(null).toString())
-
-            }
-            .addOnFailureListener {
-                googleAutocompletePlaceServiceImp.onError(it)
-            }
-
-
-
-         */
         }
 
 

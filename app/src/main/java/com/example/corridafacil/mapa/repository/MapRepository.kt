@@ -1,5 +1,6 @@
 package com.example.corridafacil.mapa.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesImp
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
@@ -28,11 +29,9 @@ interface MapRepository {
 
     fun moverVisualizacao(tamanhoDaVisualicao: LatLngBounds)
 
-    fun initRoutes(inputDataRoutes: InputDataRoutes, directionsRoutesImp: DirectionsRoutesImp)
-
     fun getMultiplesRoutes(response: Response<DirectionResponses>)
 
-    fun getRoute(response: Response<DirectionResponses>)
+    fun getRoute(response: DirectionResponses?)
 
     fun clearMap()
 
@@ -51,4 +50,5 @@ interface MapRepository {
     fun removeMarker(marker: Marker?)
 
 
+    suspend fun initRoutes(inputDataRoutes: InputDataRoutes): DirectionResponses?
 }
