@@ -1,7 +1,6 @@
-package com.example.corridafacil.dao.Geofire
+package com.example.corridafacil.models.Geofire
 
 import android.util.Log
-import com.example.corridafacil.dao.PassageiroDAO
 import com.firebase.geofire.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DatabaseError
@@ -9,7 +8,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 
 class GeofireInFirebase() {
-    var referenceDataBaseFirebase = FirebaseDatabase.getInstance().getReference("Location")
+    var referenceDataBaseFirebase = FirebaseDatabase.getInstance().getReference("Location/Passageiros")
     var geoFire = GeoFire(referenceDataBaseFirebase)
 
     fun saveDataLocationInFirebaseDataBase(key:String?,location: GeoLocation){
@@ -30,10 +29,13 @@ class GeofireInFirebase() {
 
     // raioDeBusca distancia em KM
     fun buscandoDispositivosProximos(myLocation:LatLng,raioDeBusca: Double, geofireImp: GeoFireImp){
+        var referenceDriversDatase = FirebaseDatabase.getInstance().getReference("Location/Drivers")
+        var geoFire = GeoFire(referenceDriversDatase)
         val geoQuery =  geoFire.queryAtLocation(GeoLocation(myLocation.latitude,myLocation.longitude),raioDeBusca)
         val devicesLocations = ArrayList<GeoLocation>()
         geoQuery.addGeoQueryEventListener( object : GeoQueryEventListener{
             override fun onKeyEntered(key: String?, location: GeoLocation?) {
+                Log.i("Entered verify",key.toString())
                 devicesLocations.add(location!!)
                 geofireImp.succesOnLocationResul(key!!,location)
             }
@@ -45,6 +47,7 @@ class GeofireInFirebase() {
 
             override fun onKeyMoved(key: String?, location: GeoLocation?) {
                 Log.i("Moved verify", key+" "+location!!.latitude.toString()+" "+location.longitude.toString())
+                geofireImp.getKeyMoved(key,location)
             }
 
             override fun onGeoQueryReady() {

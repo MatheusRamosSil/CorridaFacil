@@ -5,7 +5,7 @@ import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.Direct
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsSeviceImp
-import com.example.corridafacil.dao.Geofire.GeoFireImp
+import com.example.corridafacil.models.Geofire.GeoFireImp
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -17,22 +17,38 @@ import retrofit2.Response
 interface MapRepository {
 
     fun getLocationDevice( googleMapsSeviceImp: GoogleMapsSeviceImp)
+
     fun loadingNearbyDriversDevices(myLocationDevice : LatLng, raioDeBusca: Double, geofireImp: GeoFireImp)
+
     fun inicilizarAutocompletePlace( googleAutocompletePlaceServiceImp: GoogleAutocompletePlaceServiceImp)
+
     fun addMakerInLocationDevice(deviceLocation:LatLng)
+
     fun addPointInMap(newPoint:LatLng): Marker
+
     fun moverVisualizacao(tamanhoDaVisualicao: LatLngBounds)
+
     fun initRoutes(inputDataRoutes: InputDataRoutes, directionsRoutesImp: DirectionsRoutesImp)
+
     fun getMultiplesRoutes(response: Response<DirectionResponses>)
+
     fun getRoute(response: Response<DirectionResponses>)
+
     fun clearMap()
+
     fun createLocationRequest(): LocationRequest
+
     fun startLocationUpdates(locationRequest: LocationRequest, locationCallback: LocationCallback)
+
     fun stopLocationUpdates(locationCallback: LocationCallback)
+
     fun saveDataInDatabaseGeoFire(key:String?,location: GeoLocation)
-    fun removeMarkerInMarkerList(key: String, hashMapMarker: HashMap<String, Marker>)
+
+    fun removeMarkerInMarkerList(key: String, hashMapMarker: HashMap<String?, Marker>)
+
     fun removeLocationDeviceInGeofire(key: String?)
-    fun removeMarker(marker: Marker)
+
+    fun removeMarker(marker: Marker?)
 
 
 }

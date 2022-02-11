@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesImp
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
-import com.example.corridafacil.dao.Geofire.GeoFireImp
+import com.example.corridafacil.models.Geofire.GeoFireImp
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsSeviceImp
 import com.example.corridafacil.mapa.Utils.ContantsMaps
@@ -39,9 +39,9 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
     private val locationCallback = object : LocationCallback(){
         override fun onLocationResult(p0: LocationResult) {
             minhaLocalizacao = LatLng(p0.lastLocation.latitude,p0.lastLocation.longitude)
-            saveDataLocationsInGeoFire(minhaLocalizacao)
             mapRepository.addMakerInLocationDevice(minhaLocalizacao)
-
+            saveDataLocationsInGeoFire(minhaLocalizacao)
+            carregandoDispositivosProximos(minhaLocalizacao,ContantsMaps.RAIO_DE_BUSCA)
         }
     }
 
@@ -65,8 +65,9 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
           override fun onSucess(myDeviceLocation: LatLng) {
               limitesDaVisualizacao.include(myDeviceLocation)
               minhaLocalizacao = myDeviceLocation
+              saveDataLocationsInGeoFire(minhaLocalizacao)
               moverVisualizacaoDoMapa()
-              carregandoDispositivosProximos(myDeviceLocation,ContantsMaps.RAIO_DE_BUSCA)
+
 
           }
 
@@ -128,7 +129,7 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
     fun carregandoDispositivosProximos(myLoacationDevices:LatLng,raioDeBusca:Double){
 
-        val markersDriversHashMap = HashMap<String,Marker>()
+        val markersDriversHashMap = HashMap<String?,Marker>()
 
         mapRepository.loadingNearbyDriversDevices(myLoacationDevices,raioDeBusca, object : GeoFireImp{
             override fun succesOnLocationResul(key: String, location: GeoLocation?) {
@@ -136,13 +137,22 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
                 markersDriversHashMap.put(key,marker)
             }
 
+
+            override fun getKeyExited(keyExited: String) {
+                mapRepository.removeMarkerInMarkerList(keyExited,markersDriversHashMap)
+                mapRepository.removeMarker(markersDriversHashMap[keyExited])
+            }
+
+            override fun getKeyMoved(key: String?, location: GeoLocation) {
+                mapRepository.removeMarker(markersDriversHashMap[key])
+                val marker = mapRepository.addPointInMap(LatLng(location.latitude,location.longitude))
+                markersDriversHashMap.put(key,marker)
+            }
+
             override fun onFailure(toString: String) {
                 Log.i("Error", toString)
             }
 
-            override fun getKeyExited(keyExited: String) {
-                mapRepository.removeMarkerInMarkerList(keyExited,markersDriversHashMap)
-            }
         })
     }
 

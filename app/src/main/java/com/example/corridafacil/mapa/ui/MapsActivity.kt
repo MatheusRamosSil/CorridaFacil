@@ -1,9 +1,12 @@
 package com.example.corridafacil.mapa.ui
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.corridafacil.Components.Alerts.exibirAlertaDeCofiguracoesDeGPS
 import com.example.corridafacil.R
@@ -12,16 +15,16 @@ import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleA
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.Models.PlacesApplication
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
-import com.example.corridafacil.dao.Geofire.GeofireInFirebase
+import com.example.corridafacil.models.Geofire.GeofireInFirebase
 import com.example.corridafacil.databinding.ActivityMapsBinding
 import com.example.corridafacil.mapa.Utils.Others.ManageSettingsLocation
 import com.example.corridafacil.mapa.Utils.Others.isLocationEnabled
 import com.example.corridafacil.mapa.Utils.permissions.Constantes.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
 import com.example.corridafacil.mapa.Utils.permissions.getLocationPermission
-import com.example.corridafacil.mapa.repository.MapRepository
 import com.example.corridafacil.mapa.repository.MapRepositoryImpl
 import com.example.corridafacil.mapa.viewModel.MapViewModelFactory
 import com.example.corridafacil.mapa.viewModel.MapsViewModel
+import com.example.corridafacil.utils.permissions.Permissions
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -72,60 +75,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Incializa a variaval de localização do dispositivo(fusedLocationProviderClient)
         mapApplication.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-    }
-
-    override fun onStart() {
-        checkGPSEnabled()
-        super.onStart()
+        mapApplication.locationPermissionGranted = getLocationPermission()
     }
 
     override fun onResume() {
         mapViewModel.updateLocationDevice()
+        Log.w("permission garanted", locationPermissionGranted.toString())
         super.onResume()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mapApplication.mMap=googleMap
-        mapApplication.locationPermissionGranted = getLocationPermission()
-        mapViewModel.updateLocationDevice()
-       // mapViewModel.getDeviceLocation()
+        Log.w("permission garanted", locationPermissionGranted.toString())
         inicilizeFramentAutocompletePlaces()
-
-    }
-
-    override fun onStop() {
-        mapViewModel.removeLocationDeviceInGeoFireDatabase()
-        super.onStop()
     }
 
     private fun inicilizeFramentAutocompletePlaces(){
         mapViewModel.inicilizarAutocompletePlaces()
     }
 
-    private fun checkGPSEnabled(){
-        if (!isLocationEnabled()){
-            exibirAlertaDeCofiguracoesDeGPS()
-        }
+    override fun onStop() {
+        mapViewModel.removeLocationDeviceInGeoFireDatabase()
+        finish()
+        super.onStop()
     }
 
-    // [START maps_current_place_on_request_permissions_result]
-   override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        locationPermissionGranted = false
-        when (requestCode) {
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
 
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermissionGranted = true
-                }
-            }
+    fun getLocationPermission(): Boolean {
+        Log.w("permission garanted", locationPermissionGranted.toString())
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true
+            return locationPermissionGranted
+        } else {
+            ActivityCompat.requestPermissions(
+                this as Activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                Permissions.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            )
         }
 
+        return false
     }
-
-    // [END maps_current_place_on_request_permissions_result]
 }

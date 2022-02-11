@@ -44,7 +44,7 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
         }
     }
 
-    fun removerMarcadorEmUmaLista(key: String, hashMapMarker: HashMap<String,Marker>  ){
+    fun removerMarcadorEmUmaLista(key: String, hashMapMarker: HashMap<String?,Marker>  ){
             Log.i("Remove list", hashMapMarker.keys.toString())
             val marker: Marker? = hashMapMarker.get(key)
             marker?.remove()
@@ -61,9 +61,9 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
         return mapApplication.mMap.addMarker(MarkerOptions().position(novoPonto))
     }
 
-    fun removerMarcardorDoMapa(marker: Marker){
-        Log.i("Marker Location", marker.position.toString())
-        marker.remove()
+    fun removerMarcardorDoMapa(marker: Marker?){
+        Log.i("Marker Location", marker?.position.toString())
+        marker?.remove()
     }
 
     fun moverVisualizacaoParaALocazicaoDoDispositivo( tamanhoDaVisualizacao:LatLngBounds){

@@ -1,6 +1,5 @@
 package com.example.corridafacil.mapa.repository
 
-import android.location.Location
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesImp
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
@@ -9,10 +8,9 @@ import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleA
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsSeviceImp
-import com.example.corridafacil.dao.Geofire.GeoFireImp
-import com.example.corridafacil.dao.Geofire.GeofireInFirebase
+import com.example.corridafacil.models.Geofire.GeoFireImp
+import com.example.corridafacil.models.Geofire.GeofireInFirebase
 import com.example.corridafacil.mapa.Utils.Others.ManageSettingsLocation
-import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -83,18 +81,18 @@ class MapRepositoryImpl(
     }
 
     override fun startLocationUpdates(locationRequest: LocationRequest, locationCallback: LocationCallback){
-        manageSettingsLocation.startLocationUpdates(locationRequest,locationCallback)
+        manageSettingsLocation.checkManagerLocation(locationRequest, locationCallback)
     }
 
     override fun stopLocationUpdates(locationCallback: LocationCallback){
         manageSettingsLocation.stopLocationUpdates(locationCallback)
     }
 
-    override fun removeMarkerInMarkerList(key: String, hashMapMarker: HashMap<String,Marker>){
+    override fun removeMarkerInMarkerList(key: String, hashMapMarker: HashMap<String?, Marker>){
         googleMapsService.removerMarcadorEmUmaLista(key, hashMapMarker)
     }
 
-    override fun removeMarker(marker: Marker) = googleMapsService.removerMarcardorDoMapa(marker)
+    override fun removeMarker(marker: Marker?) = googleMapsService.removerMarcardorDoMapa(marker)
 
 }
 
