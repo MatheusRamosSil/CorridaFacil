@@ -5,6 +5,8 @@ import com.firebase.geofire.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 
 class GeofireInFirebase() {
@@ -29,8 +31,8 @@ class GeofireInFirebase() {
 
     // raioDeBusca distancia em KM
     fun buscandoDispositivosProximos(myLocation:LatLng,raioDeBusca: Double, geofireImp: GeoFireImp){
-        var referenceDriversDatase = FirebaseDatabase.getInstance().getReference("Location/Drivers")
-        var geoFire = GeoFire(referenceDriversDatase)
+        val referenceDriversDatase = FirebaseDatabase.getInstance().getReference("Location/Drivers")
+        val geoFire = GeoFire(referenceDriversDatase)
         val geoQuery =  geoFire.queryAtLocation(GeoLocation(myLocation.latitude,myLocation.longitude),raioDeBusca)
         val devicesLocations = ArrayList<GeoLocation>()
         geoQuery.addGeoQueryEventListener( object : GeoQueryEventListener{
@@ -61,5 +63,4 @@ class GeofireInFirebase() {
             }
         })
     }
-
 }

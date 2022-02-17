@@ -1,6 +1,7 @@
 package com.example.corridafacil.authenticationFirebase.repository.email
 
 import android.net.Uri
+import android.util.Log
 import com.example.corridafacil.Services.AuthenticationFirebaseSevice.Email.AuthenticationEmailFirebaseServiceImpl
 import com.example.corridafacil.Services.FirebaseCloudStorage.FirebaseStorageCloud
 import com.example.corridafacil.Services.FirebaseMenssaging.FirebaseMenssagingServices
@@ -8,6 +9,9 @@ import com.example.corridafacil.authenticationFirebase.viewModel.Result
 import com.example.corridafacil.models.Passageiro
 import com.example.corridafacil.models.dao.PassageiroDAO
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class EmailRepositoryImpl(private val passageiroDAO: PassageiroDAO,
                           private val authenticationEmailFirebaseServiceImpl: AuthenticationEmailFirebaseServiceImpl,
@@ -24,14 +28,25 @@ class EmailRepositoryImpl(private val passageiroDAO: PassageiroDAO,
         try {
             authenticationEmailFirebaseServiceImpl.singInEmailAndPassword(email, password)
             val result = authenticationEmailFirebaseServiceImpl.userAuthenticated()!!.isEmailVerified
-            val uidUser = authenticationEmailFirebaseServiceImpl.userAuthenticated()!!.uid
-            val token = generateNewTokenFCM()
-            val updateTokenFCm = mapOf("tokenPassageiro" to token)
-            passageiroDAO.updateUser(uidUser,updateTokenFCm)
+            updateTokenInDataBase()
             return Result.Success(result)
         } catch (error: Exception) {
             return Result.Error(error)
         }
+    }
+
+    fun updateTokenInDataBase(){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val uidUser = authenticationEmailFirebaseServiceImpl.userAuthenticated()!!.uid
+                val token = generateNewTokenFCM()
+                val updateTokenFCm = mapOf("tokenPassageiro" to token)
+                passageiroDAO.updateUser(uidUser,updateTokenFCm)
+            }catch (exception:Exception){
+                Log.w("Error in update token", exception.message.toString())
+            }
+        }
+
     }
 
     override suspend fun generateNewTokenFCM(): String {

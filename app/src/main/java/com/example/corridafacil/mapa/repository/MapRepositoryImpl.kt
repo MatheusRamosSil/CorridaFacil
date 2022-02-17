@@ -1,22 +1,23 @@
 package com.example.corridafacil.mapa.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.DirectionResponses
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
+import com.example.corridafacil.Services.FirebaseMenssaging.FirebaseMenssagingServices
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceService
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsSeviceImp
+import com.example.corridafacil.mapa.Utils.Others.ManageSettingsLocation
 import com.example.corridafacil.models.Geofire.GeoFireImp
 import com.example.corridafacil.models.Geofire.GeofireInFirebase
-import com.example.corridafacil.mapa.Utils.Others.ManageSettingsLocation
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 class MapRepositoryImpl(
@@ -24,17 +25,20 @@ class MapRepositoryImpl(
     private var googleAutocompletePlaceService: GoogleAutocompletePlaceService,
     private var directionsRoutesServices: DirectionsRoutesServices,
     private var manageSettingsLocation: ManageSettingsLocation,
-    private var geofireInFirebase: GeofireInFirebase
+    private var geofireInFirebase: GeofireInFirebase,
+    private var firebaseMenssagingServices: FirebaseMenssagingServices
 ) : MapRepository {
 
 
-
+    override suspend fun sendNotification(tokenDriver:String){
+        firebaseMenssagingServices.sendNotification(tokenDriver)
+    }
     override fun getLocationDevice(googleMapsSeviceImp: GoogleMapsSeviceImp){
        googleMapsService.getDeviceLocation(googleMapsSeviceImp)
     }
 
-    override fun loadingNearbyDriversDevices(myLocationDevice : LatLng, raioDeBusca: Double, geofireImp:GeoFireImp){
-        geofireInFirebase.buscandoDispositivosProximos(myLocationDevice,raioDeBusca, geofireImp)
+    override fun loadingNearbyDriversDevices(myLocationDevice : LatLng, raioDeBusca: Double, geofireImp:GeoFireImp) {
+       geofireInFirebase.buscandoDispositivosProximos(myLocationDevice,raioDeBusca, geofireImp)
     }
 
     override fun saveDataInDatabaseGeoFire(key:String?, location: GeoLocation){

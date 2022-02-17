@@ -19,7 +19,7 @@ class ManageSettingsLocation(private val mapApplication: MapApplication) {
     fun createLocationRequest(): LocationRequest {
         val locationRequest = LocationRequest.create().apply {
             interval = 50000
-            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             smallestDisplacement = 20f
         }
         return locationRequest

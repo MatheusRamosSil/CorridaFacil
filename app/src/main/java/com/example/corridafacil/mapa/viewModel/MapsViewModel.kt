@@ -1,15 +1,16 @@
 package com.example.corridafacil.mapa.viewModel
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
-import com.example.corridafacil.models.Geofire.GeoFireImp
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceServiceImp
 import com.example.corridafacil.mapa.Utils.ContantsMaps
 import com.example.corridafacil.mapa.Utils.Others.ConvertData
 import com.example.corridafacil.mapa.repository.MapRepository
+import com.example.corridafacil.models.Geofire.GeoFireImp
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -20,12 +21,9 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.model.Place
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
-    var mapStatusValue = MutableLiveData<String>()
-    var errorMapsStatusValue = MutableLiveData<String>()
     var limitesDaVisualizacao = LatLngBounds.builder()
     lateinit var minhaLocalizacao : LatLng
     private val resultLocationRequest: LocationRequest
@@ -79,6 +77,9 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
                                                resultRoutes.routes?.get(0)?.bounds?.southwest?.lng!!)
 
                 moverVisualizacaoDoMapa(viewSizeSouthwest,viewSizeNortheast)
+
+                val token = "e-c_K0ImQe2zN33cvtXXgw:APA91bEcHBjXMggl7rxdeqLdFdWUkYSsnmFuApvWRM-_HxY1IFV6BHOI3Vl54qYpaMfApvdbYmcbcLOf4EXzjRBEaSFsv56h4hm3QW1feNBsNjAouWQPmeO3FNVvBlegKG_nsu0dSfPJ"
+                mapRepository.sendNotification(token)
             }catch (exception : Exception){
                 Log.w("Error load routes", exception.message.toString())
             }
@@ -99,6 +100,7 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
                 place.latLng?.let { mapRepository.addPointInMap(it)
                                      inicializarRotas(minhaLocalizacao,it)
                 }
+
             }
 
             override fun getAdress(adress: String) {
@@ -110,7 +112,6 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
         })
 
     }
-
 
     fun carregandoDispositivosProximos(myLoacationDevices:LatLng,raioDeBusca:Double){
 
@@ -134,14 +135,13 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
                 markersDriversHashMap.put(key,marker)
             }
 
+            @SuppressLint("LongLogTag")
             override fun onFailure(toString: String) {
-                Log.i("Error", toString)
+                Log.i("Error in loading nearby drivers devices", toString)
             }
 
         })
     }
-
-
 }
 
 

@@ -8,22 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.corridafacil.Components.Alerts.exibirAlertaDeCofiguracoesDeGPS
 import com.example.corridafacil.R
 import com.example.corridafacil.Services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
+import com.example.corridafacil.Services.FirebaseMenssaging.FirebaseMenssagingServices
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.GoogleAutocompletePlaceService
 import com.example.corridafacil.Services.GoogleAutocompletePlacesService.Models.PlacesApplication
 import com.example.corridafacil.Services.GoogleMapsService.GoogleMapsService
 import com.example.corridafacil.Services.GoogleMapsService.Models.MapApplication
-import com.example.corridafacil.models.Geofire.GeofireInFirebase
 import com.example.corridafacil.databinding.ActivityMapsBinding
 import com.example.corridafacil.mapa.Utils.Others.ManageSettingsLocation
-import com.example.corridafacil.mapa.Utils.Others.isLocationEnabled
-import com.example.corridafacil.mapa.Utils.permissions.Constantes.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-import com.example.corridafacil.mapa.Utils.permissions.getLocationPermission
 import com.example.corridafacil.mapa.repository.MapRepositoryImpl
-import com.example.corridafacil.mapa.viewModel.MapViewModelFactory
+import com.example.corridafacil.mapa.viewModel.factories.MapViewModelFactory
 import com.example.corridafacil.mapa.viewModel.MapsViewModel
+import com.example.corridafacil.models.Geofire.GeofireInFirebase
 import com.example.corridafacil.utils.permissions.Permissions
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -67,7 +64,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     GoogleAutocompletePlaceService(autocompleteSupportFragment,placesApplication),
                     DirectionsRoutesServices(mapApplication),
                     ManageSettingsLocation(mapApplication),
-                    GeofireInFirebase()
+                    GeofireInFirebase(),
+                    FirebaseMenssagingServices()
                 )
             )
             ).get(MapsViewModel::class.java)

@@ -1,8 +1,9 @@
-package com.example.corridafacil.mapa.viewModel
+package com.example.corridafacil.mapa.viewModel.factories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.corridafacil.mapa.repository.MapRepository
+import com.example.corridafacil.mapa.viewModel.MapsViewModel
 
 class MapViewModelFactory (private val mapaRepository: MapRepository): ViewModelProvider.Factory{
 
