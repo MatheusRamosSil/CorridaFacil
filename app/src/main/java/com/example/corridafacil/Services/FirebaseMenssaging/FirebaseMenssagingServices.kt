@@ -21,6 +21,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import kotlinx.coroutines.tasks.await
+import org.json.JSONObject
 import kotlin.random.Random
 
 class FirebaseMenssagingServices : FirebaseMessagingService()  {
@@ -73,7 +74,7 @@ class FirebaseMenssagingServices : FirebaseMessagingService()  {
     suspend fun sendNotification(toDriverTokenFCM: String){
         try {
             Log.w("Entrou", "na função")
-            val dataNotification = NotificationData("oi","message of test")
+            val dataNotification = NotificationData("Name","30",ConstantsFCM.SIMPLE_NOTIFICATION)
             val pushNotification = PushNotification(dataNotification,toDriverTokenFCM)
             val response = ApiClientNotification.api
             response.postNotification(pushNotification)
