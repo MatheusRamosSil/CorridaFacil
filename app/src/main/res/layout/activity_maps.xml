@@ -5,13 +5,13 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.corridafacil.mapa.viewModel.MapsViewModel" />
+            type="com.example.corridafacil.view.mapa.viewModel.MapsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".mapa.ui.MapsActivity">
+        tools:context=".view.mapa.ui.MapsActivity">
 
         <fragment android:id="@+id/autocomplete_fragment"
             android:layout_width="match_parent"
@@ -30,6 +30,6 @@
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent"
             map:layout_constraintVertical_bias="0.55"
-            tools:context=".mapa.ui.MapsActivity" />
+            tools:context=".view.mapa.ui.MapsActivity" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

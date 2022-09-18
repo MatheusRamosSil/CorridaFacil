@@ -3,14 +3,14 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.corridafacil.authenticationFirebase.viewModel.PhoneViewModel" />
+            type="com.example.corridafacil.view.auth.viewModel.PhoneViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".authenticationFirebase.ui.register.FormAddCodeSMS">
+        tools:context=".view.auth.ui.register.FormAddCodeSMS">
 
         <EditText
             android:id="@+id/codeVerification"

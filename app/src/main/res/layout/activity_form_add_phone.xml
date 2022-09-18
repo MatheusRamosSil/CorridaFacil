@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authenticationFirebase.ui.register.FormAddPhone">
+    tools:context=".view.auth.ui.register.FormAddPhone">
     <com.hbb20.CountryCodePicker
         android:id="@+id/ccp"
         android:layout_width="290dp"

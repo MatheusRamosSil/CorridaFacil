@@ -5,14 +5,14 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.corridafacil.authenticationFirebase.viewModel.EmailViewModel" />
+            type="com.example.corridafacil.view.auth.viewModel.EmailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/imageRegister"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".authenticationFirebase.ui.register.FormAddEmail">
+        tools:context=".view.auth.ui.register.FormAddEmail">
 
         <ImageView
             android:id="@+id/imageFormProfile"
