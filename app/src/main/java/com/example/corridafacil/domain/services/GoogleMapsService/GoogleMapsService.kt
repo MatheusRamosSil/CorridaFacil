@@ -36,7 +36,7 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
         try {
             if (mapApplication.locationPermissionGranted == true) {
                 val locationResult = mapApplication.fusedLocationProviderClient?.lastLocation
-                locationResult.addOnCompleteListener { task ->
+                locationResult!!.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Set the map's camera position to the current location of the device.
                         lastKnownLocation = task.result

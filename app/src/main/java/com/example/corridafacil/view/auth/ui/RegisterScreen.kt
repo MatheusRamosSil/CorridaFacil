@@ -51,6 +51,7 @@ fun RegisterScreen(window: WindowSize) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .padding(top = 50.dp)
+                        .imePadding()
                 ){
 
                     fieldProfile()
@@ -80,7 +81,7 @@ fun buttonNextPage() {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)) {
+                .padding(20.dp)) {
             Text("Proximo",
                     style = MaterialTheme.typography.h3,
                     color = Color.Black,

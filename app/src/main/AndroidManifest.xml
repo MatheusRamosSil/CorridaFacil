@@ -29,7 +29,7 @@
             android:exported="false"
             android:label="@string/title_activity_login_screen"
             android:theme="@style/Theme.CorridaFacil"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="adjustResize" />
         <!--
 <activity
             android:name=".auth.ui.LoginActivity"

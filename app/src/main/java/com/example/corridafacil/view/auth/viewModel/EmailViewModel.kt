@@ -3,7 +3,6 @@ package com.example.corridafacil.view.auth.viewModel
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.corridafacil.data.repository.auth.email.EmailRepository
