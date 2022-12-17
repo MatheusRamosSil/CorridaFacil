@@ -32,12 +32,21 @@ object Permissions {
             LocationManager.NETWORK_PROVIDER)
     }
 
+    fun Context.acessFineLocationPermissions() =  ContextCompat
+                                                    .checkSelfPermission(applicationContext,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+
+
     fun Context.checkForPermissions(activity: Activity, permission: String, name :String, resquestCode: Int){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             return when{
-                ContextCompat.checkSelfPermission(applicationContext,permission) == PackageManager.PERMISSION_GRANTED ->{
+                acessFineLocationPermissions() -> {
                     Toast.makeText(applicationContext, "$name permission granted", Toast.LENGTH_SHORT).show()
                 }
+                hasReadExternalStoragePermission() ->{
+                    Toast.makeText(applicationContext, "$name permission granted", Toast.LENGTH_SHORT).show()
+                }
+
                 ActivityCompat.shouldShowRequestPermissionRationale(this as Activity, permission) -> showDialog(permission,name,resquestCode,activity)
 
                 else -> ActivityCompat.requestPermissions(this , arrayOf(permission),resquestCode)
@@ -57,4 +66,6 @@ object Permissions {
         val dialog : AlertDialog = builder.create()
         dialog.show()
     }
+
+
 }

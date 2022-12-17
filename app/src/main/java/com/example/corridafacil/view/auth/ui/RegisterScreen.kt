@@ -21,13 +21,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.corridafacil.R
 import com.example.corridafacil.utils.responsive.WindowSize
 import com.example.corridafacil.utils.responsive.rememberWindowSize
 import com.example.corridafacil.view.auth.ui.ui.theme.*
 
 @Composable
-fun RegisterScreen(window: WindowSize) {
+fun RegisterScreen(window: WindowSize, navController: NavHostController) {
     BoxWithConstraints(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)){
@@ -139,8 +141,8 @@ fun fieldInput( labelName: String){
             maxLines = 1,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
-                focusedIndicatorColor = MaterialTheme.colors.secondary,
-                unfocusedIndicatorColor = MaterialTheme.colors.secondary
+                focusedIndicatorColor = Amber,
+                unfocusedIndicatorColor = Amber
             ),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -185,8 +187,8 @@ fun fieldPassword( labelName: String){
             else PasswordVisualTransformation(),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
-                focusedIndicatorColor = MaterialTheme.colors.secondary,
-                unfocusedIndicatorColor = MaterialTheme.colors.secondary
+                focusedIndicatorColor = Amber,
+                unfocusedIndicatorColor = Amber
             ))
     }
 }
@@ -196,6 +198,6 @@ fun fieldPassword( labelName: String){
 fun RegistertPreview() {
     CorridaFacilTheme {
         val window = rememberWindowSize()
-        RegisterScreen(window)
+        RegisterScreen(window, rememberNavController())
     }
 }
