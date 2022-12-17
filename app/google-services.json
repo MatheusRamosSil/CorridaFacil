@@ -1,108 +1,41 @@
 {
   "project_info": {
-    "project_number": "47994110418",
-    "firebase_url": "https://corridafacil-67530.firebaseio.com",
-    "project_id": "corridafacil-67530",
-    "storage_bucket": "corridafacil-67530.appspot.com"
+    "project_number": "474984745208",
+    "project_id": "corrida-facil",
+    "storage_bucket": "corrida-facil.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:47994110418:android:e536b3a6c71b90d4ef880b",
-        "android_client_info": {
-          "package_name": "com.example.cf02"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "47994110418-lf5pfch8isku0aqiqeq2aqepd4u9d2np.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.cf02",
-            "certificate_hash": "0ba8013bef92df683cd3f8a2e26627f71ccce7f2"
-          }
-        },
-        {
-          "client_id": "47994110418-jgu3fg4am21cc38ke55n8g0tst721t3h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDDqItRkAE3IJ8J2PtfIwl-XwujGyUQvP0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "47994110418-jgu3fg4am21cc38ke55n8g0tst721t3h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:47994110418:android:357f9a8bcbbeb00bef880b",
-        "android_client_info": {
-          "package_name": "com.example.cfm02"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "47994110418-jgu3fg4am21cc38ke55n8g0tst721t3h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDDqItRkAE3IJ8J2PtfIwl-XwujGyUQvP0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "47994110418-jgu3fg4am21cc38ke55n8g0tst721t3h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:47994110418:android:648257e4cf03105aef880b",
+        "mobilesdk_app_id": "1:474984745208:android:8721b472c3ab5788a2130d",
         "android_client_info": {
           "package_name": "com.example.corridafacil"
         }
       },
       "oauth_client": [
         {
-          "client_id": "47994110418-kqu6tmt2u8qs2dk3i0ik58118ghr1d9b.apps.googleusercontent.com",
+          "client_id": "474984745208-0jsk73jcn34ki5f6dblbibu7h8dbi05c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.corridafacil",
-            "certificate_hash": "85c488a5048de372536986a960afc1fb0df1a8b2"
+            "certificate_hash": "3c02ee97e2d961ea057d0529ce176703e87c097e"
           }
         },
         {
-          "client_id": "47994110418-jgu3fg4am21cc38ke55n8g0tst721t3h.apps.googleusercontent.com",
+          "client_id": "474984745208-qk81951tegqj5v8qg587638293s3bns6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDqItRkAE3IJ8J2PtfIwl-XwujGyUQvP0"
+          "current_key": "AIzaSyDZe0eHVcj5JzFif1L3SJNLey3vm5Zd3tU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "47994110418-jgu3fg4am21cc38ke55n8g0tst721t3h.apps.googleusercontent.com",
+              "client_id": "474984745208-qk81951tegqj5v8qg587638293s3bns6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

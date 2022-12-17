@@ -3,34 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.corridafacil">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CorridaFacil">
-        <activity android:name=".authenticationFirebase.ui.Register.SegundoFormulario" />
-        <activity android:name=".authenticationFirebase.ui.Register.PrimeiroFormulario" />
-        <activity android:name=".authenticationFirebase.ui.Register.TerceiroFormulario" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity
-            android:name=".Mapa.ui.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".MainActivity" />
+            android:name=".view.auth.ui.register.FormProfile"
+            android:exported="false"
+            android:label="@string/title_activity_form_profile"
+            android:theme="@style/Theme.CorridaFacil"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <!--
+<activity
+            android:name=".auth.ui.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.CorridaFacil" />
+        -->
         <activity
-            android:name=".authenticationFirebase.ui.LoginActivity"
+            android:name=".view.auth.ui.ForgoutPassword"
+            android:exported="false" />
+        <activity
+            android:name=".view.auth.ui.Login"
+            android:screenOrientation="portrait"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.CorridaFacil.NoActionBar">
+            android:theme="@style/Theme.CorridaFacil.NoActionBar"
+            tools:ignore="AppLinkUrlError">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -38,10 +48,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.auth.ui.register.FormAddEmail"
+            android:exported="false"
+            android:label="@string/title_activity_form_add_email"
+            android:theme="@style/Theme.CorridaFacil" />
+        <activity
+            android:name=".view.auth.ui.register.FormAddCodeSms"
+            android:exported="false"
+            android:label="@string/title_activity_form_add_code_sms"
+            android:theme="@style/Theme.CorridaFacil"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name=".view.mapa.ui.MapsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CorridaFacil.NoActionBar" />
+        <activity
+            android:name=".view.auth.ui.register.FormAddPhone"
+            android:exported="false"
+            android:label="@string/title_activity_form_add_phone"
+            android:theme="@style/Theme.CorridaFacil" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${googleMapsApiKey}" />
 
         <service
-            android:name=".Services.FirebaseMenssaging.FirebaseMenssagingServices"
-            android:exported="false">
+            android:name="com.example.corridafacil.domain.services.FirebaseMenssaging.FirebaseMenssagingServices"
+            android:exported="false"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
