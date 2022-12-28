@@ -31,6 +31,7 @@ fun inputText(
             onValueChange = {onValueChange(it)},
             textStyle = TextStyle(fontFamily = CustomFonts().getInterFamily()),
             label = { Text(labelName, color = Amber) },
+            maxLines = 1,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = White,
                 focusedIndicatorColor = Amber,

@@ -90,10 +90,6 @@ fun LoginScreen(window: WindowSize,
 
 }
 
-fun test(){
-    Log.w("isso é uma função", "passada por parametro")
-}
-
 
 @Composable
 fun MakerNewRegister(navController: NavController) {

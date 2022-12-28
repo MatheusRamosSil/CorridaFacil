@@ -99,15 +99,18 @@ class Login : AppCompatActivity() {
         super.onResume()
 
       lifecycleScope.launchWhenStarted {
+          Log.w("Life cycle", " entrou no ciclo de vida do app")
           viewModelEmail.stateUI.collect {
+              Log.w("Value da opcao", "${it}")
               when(it){
                   is Result.Success ->{
                       val emailIsVerified = viewModelEmail.checkUserAuthenticated()!!.isEmailVerified
-                      if (emailIsVerified){
-                          startActivity(Intent(this@Login, MapsActivity::class.java))
-                      }else{
-                          Toast.makeText(this@Login, "Por favor verifique o email de verificação que foi enviado para o seu email",Toast.LENGTH_SHORT).show()
-                      }
+                      Log.w("Email is verified", "${emailIsVerified}")
+                     // if (emailIsVerified){
+                      //    startActivity(Intent(this@Login, MapsActivity::class.java))
+                      //}else{
+                       //   Toast.makeText(this@Login, "Por favor verifique o email de verificação que foi enviado para o seu email",Toast.LENGTH_SHORT).show()
+                      //}
                   }
                   is Result.Error ->{
                       Toast.makeText(this@Login, it.exception.message.toString(), Toast.LENGTH_SHORT).show()

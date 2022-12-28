@@ -42,6 +42,7 @@ fun inputPassword(
     ) {
         OutlinedTextField(
             value = value,
+            maxLines = 1,
             onValueChange = { onValueChange(it) },
             textStyle = TextStyle(fontFamily = CustomFonts().getInterFamily()),
             label = { Text(labelName, color = Amber) },
