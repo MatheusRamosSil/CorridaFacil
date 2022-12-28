@@ -1,6 +1,7 @@
 package com.example.corridafacil.view.utils
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,13 +14,14 @@ import com.example.corridafacil.view.auth.viewModel.EmailViewModel
 fun SetupNavigation(
     navController: NavHostController,
     window: WindowSize,
+    viewModelEmail: EmailViewModel = hiltViewModel()
 ){
     NavHost(navController = navController,
             startDestination = ScreensNavigate.Login.route){
         composable(
             route = ScreensNavigate.Login.route
         ){
-            LoginScreen(window = window, navController)
+            LoginScreen(window = window, navController,viewModelEmail)
         }
         
         composable(

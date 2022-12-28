@@ -7,7 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,10 +26,7 @@ import com.example.corridafacil.utils.validators.errorMessageUI.MessageErrorForB
 import com.example.corridafacil.utils.validators.errorMessageUI.ShowMessageErrorBadFormart.showMensageErrorFormaBad
 import com.example.corridafacil.view.auth.ui.ui.theme.Background
 import com.example.corridafacil.view.auth.ui.ui.theme.CorridaFacilTheme
-import com.example.corridafacil.view.auth.ui.ui.theme.components.Button
-import com.example.corridafacil.view.auth.ui.ui.theme.components.InputPassword
-import com.example.corridafacil.view.auth.ui.ui.theme.components.InputText
-import com.example.corridafacil.view.auth.ui.ui.theme.components.Title
+import com.example.corridafacil.view.auth.ui.ui.theme.components.*
 import com.example.corridafacil.view.auth.viewModel.EmailViewModel
 import com.example.corridafacil.view.utils.ScreensNavigate
 
@@ -38,26 +35,59 @@ import com.example.corridafacil.view.utils.ScreensNavigate
 @Composable
 fun LoginScreen(window: WindowSize,
                 navController: NavController,
+                viewModelEmail: EmailViewModel
 ) {
 
-    BoxWithConstraints(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)) {
-        Background(window)
-        Column( modifier= Modifier.padding(top = 258.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-            Title("Login",
-                  "Por favor, adicione suas credenciais para continuar:")
-            val email = InputText(labelName = "Email")
-            val password = InputPassword(labelName = "Senha")
-            Button(40.dp,100.dp,{ test()})
-            MakerNewRegister(navController)
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isFormatValidEmail by remember { mutableStateOf(true) }
+    var isFormatValidPassword by remember { mutableStateOf(true) }
 
+    fun validateDataInput(email:String,
+                          password: String
+    ): Boolean {
+        isFormatValidEmail = isValidEmail(email)
+        isFormatValidPassword = isValidPassword(password)
 
+        return isFormatValidEmail && isFormatValidPassword
+    }
+
+    fun login(viewModelEmail: EmailViewModel){
+        if (validateDataInput(email, password)){
+            viewModelEmail.login(email,password)
         }
+    }
+
+    Background(window)
+    Column( modifier= Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Title("Login",
+            "Por favor, adicione suas credenciais para continuar:")
+
+
+        inputText(
+            value = email,
+            labelName = "Email",
+            isValidateField = isFormatValidEmail,
+            errorMessage = MessageErrorForBadFormatInFormsFields.EMAIL_FORMAT_BAD,
+            onValueChange= {email = it}
+        )
+        inputPassword(
+            value = password,
+            labelName = "Senha",
+            isValidateField = isFormatValidPassword,
+            errorMessage = MessageErrorForBadFormatInFormsFields.PASSWORD_FORMAT_BAD,
+            onValueChange = {password = it}
+        )
+        Button(40.dp,100.dp,
+            { login(viewModelEmail)})
+        MakerNewRegister(navController)
+
 
     }
+
+
 }
 
 fun test(){
@@ -81,7 +111,7 @@ fun MakerNewRegister(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
     CorridaFacilTheme {
@@ -89,3 +119,5 @@ fun LoginPreview() {
         LoginScreen(window, rememberNavController())
     }
 }
+
+ */

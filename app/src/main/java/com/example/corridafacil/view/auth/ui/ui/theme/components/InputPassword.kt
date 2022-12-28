@@ -1,12 +1,13 @@
 package com.example.corridafacil.view.auth.ui.ui.theme.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,8 +20,14 @@ import com.example.corridafacil.view.auth.ui.ui.theme.CustomFonts
 import com.example.corridafacil.view.auth.ui.ui.theme.White
 
 @Composable
-fun InputPassword( labelName: String): String {
-    var password by rememberSaveable { mutableStateOf("") }
+fun inputPassword(
+    labelName: String,
+    isValidateField: Boolean,
+    errorMessage: String,
+    value: String,
+    onValueChange: (String)-> Unit
+){
+
     var passwordVisibility by remember { mutableStateOf( false)    }
 
     val icon  = if (passwordVisibility)
@@ -28,11 +35,14 @@ fun InputPassword( labelName: String): String {
     else
         painterResource(id = R.drawable.visibility_password_off)
 
-    Box(modifier = Modifier
-        .padding(10.dp)){
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(10.dp)
+    ) {
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = value,
+            onValueChange = { onValueChange(it) },
             textStyle = TextStyle(fontFamily = CustomFonts().getInterFamily()),
             label = { Text(labelName, color = Amber) },
             trailingIcon = {
@@ -52,7 +62,19 @@ fun InputPassword( labelName: String): String {
                 unfocusedIndicatorColor = Amber
 
             ))
+
+        if(!isValidateField){
+            Text(text = errorMessage,
+                color = Color.Red,
+                style = MaterialTheme.typography.overline,
+                modifier = Modifier
+                    .padding(start = 28.dp,
+                        top = 16.dp)
+                    .offset(y=(-8).dp)
+                    .fillMaxWidth(0.9f)
+
+            )
+        }
     }
 
-    return password
 }
