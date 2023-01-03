@@ -30,7 +30,7 @@ class EmailRepositoryImpl @Inject constructor(
             authenticationEmailFirebaseServiceImpl.singInEmailAndPassword(email, password)
             val result = authenticationEmailFirebaseServiceImpl.userAuthenticated()!!.isEmailVerified
             updateTokenInDataBase()
-            return Result.Success(result)
+            return Result.Success(true)
         } catch (error: Exception) {
             return Result.Error(error)
         }

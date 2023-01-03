@@ -55,7 +55,7 @@ class Login : AppCompatActivity() {
             }
         }
 
-
+        viewModelEmail.login()
         checkForPermissions(this,android.Manifest.permission.ACCESS_FINE_LOCATION,"Permission location",1)
 
         checkGPSEnabled()
@@ -121,17 +121,14 @@ class Login : AppCompatActivity() {
       }
     }
 
-    private fun forgotPassword() {
-        val intent = Intent(this, ForgoutPassword::class.java)
-        startActivity(intent)
-    }
+
 
     fun register() {
         val intent = Intent(this, FormAddPhone::class.java)
         startActivity(intent)
     }
 
-    fun login(){
+   /* fun login(){
 
         val formatEmail = isValidEmail(componentsViewLogin.getValueFieldEdtiTextToString(R.id.editTextLoginEmailAddress))
         val formatPassword = isValidPassword(componentsViewLogin.getValueFieldEdtiTextToString(R.id.editTextLoginPassword))
@@ -146,4 +143,6 @@ class Login : AppCompatActivity() {
         }
 
     }
+
+    */
 }

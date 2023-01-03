@@ -54,7 +54,7 @@ fun LoginScreen(window: WindowSize,
 
     fun login(viewModelEmail: EmailViewModel){
         if (validateDataInput(email, password)){
-            viewModelEmail.login(email,password)
+            //viewModelEmail.login(email,password)
         }
     }
 

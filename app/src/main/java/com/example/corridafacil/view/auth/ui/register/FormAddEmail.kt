@@ -24,6 +24,7 @@ import com.example.corridafacil.data.models.dao.PassageiroDAOImpl
 import com.example.corridafacil.utils.permissions.Permissions
 import com.example.corridafacil.utils.permissions.Permissions.checkForPermissions
 import com.example.corridafacil.utils.permissions.Permissions.hasReadExternalStoragePermission
+import com.example.corridafacil.view.auth.viewModel.AuthenticathionEmail
 
 
 class FormAddEmail : AppCompatActivity() {
@@ -32,7 +33,6 @@ class FormAddEmail : AppCompatActivity() {
     private lateinit var viewModelEmail: EmailViewModel
     private lateinit var viewValidators: ViewValidators
     private lateinit var componentsViewFormAddEmail: ComponentsViewActivity
-
     private lateinit var imagemDoPerfil: Uri
     private var fieldsForm = HashMap<String,String>()
 
@@ -47,7 +47,7 @@ class FormAddEmail : AppCompatActivity() {
                 EmailRepositoryImpl(PassageiroDAOImpl(),
                     AuthenticationEmailFirebaseServiceImpl(),
                     FirebaseStorageCloud()
-                )
+                ),
             )
             )
                 .get(EmailViewModel::class.java)

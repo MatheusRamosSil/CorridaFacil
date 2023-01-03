@@ -1,11 +1,12 @@
 package com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.Email
 
 import com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.FirebaseAuthentication
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class AuthenticationEmailFirebaseServiceImpl  @Inject constructor(){
+class AuthenticationEmailFirebaseServiceImpl  @Inject constructor() {
 
     private var firebaseAuth = FirebaseAuthentication.getInstanceFirebaseAuth()
 

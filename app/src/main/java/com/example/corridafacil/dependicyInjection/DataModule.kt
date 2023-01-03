@@ -5,6 +5,7 @@ import com.example.corridafacil.data.models.dao.PassageiroDAO
 import com.example.corridafacil.data.models.dao.PassageiroDAOImpl
 import com.example.corridafacil.data.repository.auth.email.EmailRepository
 import com.example.corridafacil.data.repository.auth.email.EmailRepositoryImpl
+import com.example.corridafacil.view.auth.viewModel.AuthenticathionEmail
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,4 +28,5 @@ interface DataModule {
     fun bindCreatePassageiroDAO(
         passageiroDAO: PassageiroDAOImpl
     ):PassageiroDAO
+
 }

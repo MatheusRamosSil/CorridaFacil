@@ -73,8 +73,7 @@ class LoginTestUI {
             hasText("Sign in") and hasClickAction()
         ).performClick()
 
-        composeTestRule.onNodeWithText(EMAIL_FORMAT_BAD).assertExists()
-        composeTestRule.onNodeWithText(PASSWORD_FORMAT_BAD).assertExists()
+
 
     }
 

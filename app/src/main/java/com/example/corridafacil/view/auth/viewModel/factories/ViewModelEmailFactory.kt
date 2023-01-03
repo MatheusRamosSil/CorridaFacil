@@ -3,6 +3,7 @@ package com.example.corridafacil.view.auth.viewModel.factories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.corridafacil.data.repository.auth.email.EmailRepository
+import com.example.corridafacil.view.auth.viewModel.AuthenticathionEmail
 import com.example.corridafacil.view.auth.viewModel.EmailViewModel
 
 class ViewModelEmailFactory constructor(private val emailRepository: EmailRepository) : ViewModelProvider.Factory {
