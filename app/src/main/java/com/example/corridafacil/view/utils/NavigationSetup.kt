@@ -7,7 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.corridafacil.utils.responsive.WindowSize
 import com.example.corridafacil.view.auth.ui.LoginScreen
-import com.example.corridafacil.view.auth.ui.RegisterScreen
+import com.example.corridafacil.view.auth.ui.register.EmailRegister
+import com.example.corridafacil.view.auth.ui.register.PhoneRegister
+import com.example.corridafacil.view.auth.ui.register.ProfileRegisterScreen
 import com.example.corridafacil.view.auth.viewModel.EmailViewModel
 
 @Composable
@@ -17,7 +19,7 @@ fun SetupNavigation(
     viewModelEmail: EmailViewModel = hiltViewModel()
 ){
     NavHost(navController = navController,
-            startDestination = ScreensNavigate.Login.route){
+            startDestination = ScreensNavigate.RegisterEmail.route){
         composable(
             route = ScreensNavigate.Login.route
         ){
@@ -27,7 +29,20 @@ fun SetupNavigation(
         composable(
             route = ScreensNavigate.Profile.route
         ){
-            RegisterScreen(window = window, navController)
+            ProfileRegisterScreen(window = window, navController,viewModelEmail)
         }
+
+        composable(
+            route = ScreensNavigate.RegisterEmail.route
+        ){
+            EmailRegister(window, navController, viewModelEmail)
+        }
+
+        composable(
+            route = ScreensNavigate.RegisterPhone.route
+        ){
+            PhoneRegister(window = window, navController = navController )
+        }
+
     }
 }

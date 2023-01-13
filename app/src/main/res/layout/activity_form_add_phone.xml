@@ -5,40 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.auth.ui.register.FormAddPhone">
-    <com.hbb20.CountryCodePicker
-        android:id="@+id/ccp"
-        android:layout_width="290dp"
+
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        app:ccp_autoDetectCountry="true"
-        app:ccp_showFullName="true"
-        app:ccp_showNameCode="false"
-        app:ccp_showPhoneCode="false"
-        app:ccp_textGravity="RIGHT"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-61dp"
+        tools:layout_editor_absoluteY="140dp">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="117dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="152dp"
+            app:ccp_autoDetectCountry="true"
+            app:ccp_showFullName="true"
+            app:ccp_showNameCode="false"
+            app:ccp_showPhoneCode="true"
+            app:ccp_textGravity="RIGHT"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.139"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+
+        </com.hbb20.CountryCodePicker>
 
         <EditText
             android:id="@+id/editTextPersonPhone"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
+            android:layout_width="218dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:inputType="phone" />
-    </com.hbb20.CountryCodePicker>
+            android:background="#0000"
+            android:inputType="phone"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="152dp"
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="105dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ccp" />
+            />
+
+    </androidx.compose.ui.platform.ComposeView>
+
 
 
 

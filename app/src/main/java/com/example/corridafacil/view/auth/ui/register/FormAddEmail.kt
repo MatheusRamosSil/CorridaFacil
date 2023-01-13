@@ -1,36 +1,25 @@
 package com.example.corridafacil.view.auth.ui.register
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.corridafacil.R
-import com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.Email.AuthenticationEmailFirebaseServiceImpl
-import com.example.corridafacil.domain.services.FirebaseCloudStorage.FirebaseStorageCloud
-import com.example.corridafacil.data.repository.auth.email.EmailRepositoryImpl
-import com.example.corridafacil.view.auth.ui.Login
-import com.example.corridafacil.view.auth.ui.componentsView.ComponentsViewActivity
-import com.example.corridafacil.view.auth.viewModel.EmailViewModel
-import com.example.corridafacil.view.auth.viewModel.Result
-import com.example.corridafacil.view.auth.viewModel.ViewValidators
-import com.example.corridafacil.view.auth.viewModel.factories.ViewModelEmailFactory
 import com.example.corridafacil.databinding.ActivityFormAddEmailBinding
-import com.example.corridafacil.data.models.dao.PassageiroDAOImpl
 import com.example.corridafacil.utils.permissions.Permissions
 import com.example.corridafacil.utils.permissions.Permissions.checkForPermissions
 import com.example.corridafacil.utils.permissions.Permissions.hasReadExternalStoragePermission
-import com.example.corridafacil.view.auth.viewModel.AuthenticathionEmail
+import com.example.corridafacil.view.auth.ui.componentsView.ComponentsViewActivity
+import com.example.corridafacil.view.auth.viewModel.EmailViewModel
+import com.example.corridafacil.view.auth.viewModel.ViewValidators
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FormAddEmail : AppCompatActivity() {
 
     private lateinit var binding: ActivityFormAddEmailBinding
-    private lateinit var viewModelEmail: EmailViewModel
+    private  val viewModelEmail: EmailViewModel by viewModels()
     private lateinit var viewValidators: ViewValidators
     private lateinit var componentsViewFormAddEmail: ComponentsViewActivity
     private lateinit var imagemDoPerfil: Uri
@@ -42,15 +31,6 @@ class FormAddEmail : AppCompatActivity() {
         binding = ActivityFormAddEmailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelEmail =
-            ViewModelProvider(this, ViewModelEmailFactory(
-                EmailRepositoryImpl(PassageiroDAOImpl(),
-                    AuthenticationEmailFirebaseServiceImpl(),
-                    FirebaseStorageCloud()
-                ),
-            )
-            )
-                .get(EmailViewModel::class.java)
         binding.viewmodel = viewModelEmail
 
         viewValidators = ViewValidators(ComponentsViewActivity(this))
@@ -92,7 +72,7 @@ class FormAddEmail : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        viewValidators.checkFieldsIsValid.observe(this, Observer {
+       /* viewValidators.checkFieldsIsValid.observe(this, Observer {
             if (it == false) {
                 viewModelEmail.addValuesToOneNewUser = adicionandoValoresParaNovoUsuario()
 
@@ -119,6 +99,8 @@ class FormAddEmail : AppCompatActivity() {
             }
             viewValidators.showMenssageErrorToFormatFields()
         })
+
+        */
     }
 
     private fun adicionandoValoresParaNovoUsuario(): HashMap<String, String> {

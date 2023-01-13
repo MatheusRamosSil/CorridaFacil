@@ -25,5 +25,6 @@
     <string name="title_activity_form_add_phone">FormAddPhone</string>
     <string name="title_activity_login_screen">LoginScreen</string>
     <string name="title_activity_form_profile">FormProfile</string>
+    <string name="title_activity_register_email">RegisterEmailActivity</string>
 
 </resources>

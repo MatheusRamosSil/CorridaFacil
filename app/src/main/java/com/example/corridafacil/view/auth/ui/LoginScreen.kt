@@ -1,31 +1,23 @@
 package com.example.corridafacil.view.auth.ui
 
-import android.util.Log
-import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.corridafacil.R
 import com.example.corridafacil.utils.responsive.WindowSize
-import com.example.corridafacil.utils.responsive.rememberWindowSize
-import com.example.corridafacil.utils.validators.ValidatorsFieldsForms
 import com.example.corridafacil.utils.validators.ValidatorsFieldsForms.isValidEmail
 import com.example.corridafacil.utils.validators.ValidatorsFieldsForms.isValidPassword
 import com.example.corridafacil.utils.validators.errorMessageUI.MessageErrorForBadFormatInFormsFields
-import com.example.corridafacil.utils.validators.errorMessageUI.ShowMessageErrorBadFormart.showMensageErrorFormaBad
 import com.example.corridafacil.view.auth.ui.ui.theme.Background
-import com.example.corridafacil.view.auth.ui.ui.theme.CorridaFacilTheme
 import com.example.corridafacil.view.auth.ui.ui.theme.components.*
 import com.example.corridafacil.view.auth.viewModel.EmailViewModel
 import com.example.corridafacil.view.utils.ScreensNavigate
@@ -54,31 +46,38 @@ fun LoginScreen(window: WindowSize,
 
     fun login(viewModelEmail: EmailViewModel){
         if (validateDataInput(email, password)){
-            //viewModelEmail.login(email,password)
+            viewModelEmail.login(email,password)
         }
     }
 
     Background(window)
-    Column( modifier= Modifier.fillMaxSize(),
+    Column( modifier= Modifier
+        .fillMaxSize()
+        .navigationBarsPadding()
+        .imePadding()
+        .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Title("Login",
             "Por favor, adicione suas credenciais para continuar:")
 
 
-        inputText(
-            value = email,
+        inputOutlinedText(
             labelName = "Email",
             isValidateField = isFormatValidEmail,
             errorMessage = MessageErrorForBadFormatInFormsFields.EMAIL_FORMAT_BAD,
-            onValueChange= {email = it}
+            value = email,
+            onValueChange= {email = it},
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            typeKeyBoard = KeyboardType.Text
         )
         inputPassword(
             value = password,
             labelName = "Senha",
             isValidateField = isFormatValidPassword,
             errorMessage = MessageErrorForBadFormatInFormsFields.PASSWORD_FORMAT_BAD,
-            onValueChange = {password = it}
+            onValueChange = {password = it},
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
         )
         Button(40.dp,100.dp,
             { login(viewModelEmail)})

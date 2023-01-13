@@ -8,6 +8,7 @@ import com.example.corridafacil.domain.services.FirebaseMenssaging.FirebaseMenss
 import com.example.corridafacil.view.auth.viewModel.Result
 import com.example.corridafacil.data.models.Passageiro
 import com.example.corridafacil.data.models.dao.PassageiroDAO
+import com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.AuthenticathionEmail
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -16,16 +17,18 @@ import javax.inject.Inject
 
 class EmailRepositoryImpl @Inject constructor(
                           private val passageiroDAO: PassageiroDAO,
-                          private val authenticationEmailFirebaseServiceImpl: AuthenticationEmailFirebaseServiceImpl,
+                          private val authenticathionEmail: AuthenticathionEmail,
                           private val firebaseStorageCloud: FirebaseStorageCloud
 ) : EmailRepository {
 
 
-    override suspend fun createNewRegister(email: String, password: String): String {
+    /*override suspend fun createNewRegister(email: String, password: String): String {
         return authenticationEmailFirebaseServiceImpl.createNewAccountEmailPassword(email, password)
     }
 
-    override suspend fun singEmailPassword(email: String, password: String): Result {
+     */
+
+   /* override suspend fun singEmailPassword(email: String, password: String): Result {
         try {
             authenticationEmailFirebaseServiceImpl.singInEmailAndPassword(email, password)
             val result = authenticationEmailFirebaseServiceImpl.userAuthenticated()!!.isEmailVerified
@@ -36,7 +39,9 @@ class EmailRepositoryImpl @Inject constructor(
         }
     }
 
-    fun updateTokenInDataBase(){
+    */
+
+   /* fun updateTokenInDataBase(){
         CoroutineScope(IO).launch {
             try {
                 val uidUser = authenticationEmailFirebaseServiceImpl.userAuthenticated()!!.uid
@@ -50,6 +55,8 @@ class EmailRepositoryImpl @Inject constructor(
 
     }
 
+    */
+
     override suspend fun generateNewTokenFCM(): String {
         return FirebaseMenssagingServices().generateTokenFCM()
     }
@@ -58,28 +65,36 @@ class EmailRepositoryImpl @Inject constructor(
         return passageiroDAO.readDataUser(uid)
     }
 
-    override fun sendPasswordResetEmail(email: String): Boolean {
+    /*override fun sendPasswordResetEmail(email: String): Boolean {
         return authenticationEmailFirebaseServiceImpl.sendPasswordResetEmail(email)
     }
 
-    override fun userAuthenticated(): FirebaseUser? {
+     */
+
+   /* override fun userAuthenticated(): FirebaseUser? {
         return authenticationEmailFirebaseServiceImpl.userAuthenticated()
 
     }
 
+    */
 
-    override fun logout() {
+
+  /*  override fun logout() {
         authenticationEmailFirebaseServiceImpl.logout()
     }
+
+   */
 
     override suspend fun saveNewUserInRealTimeDataBase(newInstancePassageiro: Passageiro): Boolean
     {
         return passageiroDAO.createNewPassageiro(newInstancePassageiro)
     }
 
-    override suspend fun sendEmailVerification(): Void? {
+   /* override suspend fun sendEmailVerification(): Void? {
         return authenticationEmailFirebaseServiceImpl.sendEmailVerification()
     }
+
+    */
 
 
     override suspend fun updateImageProfile(

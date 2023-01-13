@@ -33,8 +33,8 @@ class FormAddPhone : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         codeCountryCodePicker.registerCarrierNumberEditText(numeroTelefoneDigitado)
-        val buttonNextPage : Button = findViewById(R.id.button2)
-        buttonNextPage.setOnClickListener(this::nextPage)
+
+
     }
 
     fun nextPage(view: View) {

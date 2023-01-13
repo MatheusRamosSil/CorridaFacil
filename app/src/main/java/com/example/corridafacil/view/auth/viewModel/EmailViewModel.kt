@@ -1,23 +1,17 @@
 package com.example.corridafacil.view.auth.viewModel
 
-import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.corridafacil.data.repository.auth.email.EmailRepository
 import com.example.corridafacil.data.models.Passageiro
-import com.google.firebase.auth.AuthResult
+import com.example.corridafacil.data.repository.auth.AuthEmailRepository
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -30,12 +24,13 @@ sealed class Result{
 
 @HiltViewModel
 class EmailViewModel @Inject constructor(
-    private val emailRepository: EmailRepository,
+    private val authEmailRepository: AuthEmailRepository,
 ): ViewModel() {
 
     private lateinit var tokenFirebase : String
     private var typeDevie : String
     private var modelDevice : String
+    private lateinit var auth: FirebaseAuth
 
     val _state = MutableStateFlow<Result>(Result.Empty)
     val stateUI : StateFlow<Result> = _state
@@ -44,7 +39,7 @@ class EmailViewModel @Inject constructor(
 
     init {
         viewModelScope.async {
-            tokenFirebase = emailRepository.generateNewTokenFCM()
+            //tokenFirebase = emailRepository.generateNewTokenFCM()
         }
 
         typeDevie = Build.DEVICE
@@ -52,7 +47,7 @@ class EmailViewModel @Inject constructor(
     }
 
 
-    fun checkDeviceAndEmailOfLoggedUser(){
+    /*fun checkDeviceAndEmailOfLoggedUser(){
         viewModelScope.async {
             try {
                 val result = checkUserAuthenticated()!!.isEmailVerified
@@ -67,7 +62,9 @@ class EmailViewModel @Inject constructor(
 
     }
 
-    fun checkUserAuthenticated(): FirebaseUser? {
+     */
+
+    /*fun checkUserAuthenticated(): FirebaseUser? {
         return emailRepository.userAuthenticated()
     }
 
@@ -84,36 +81,36 @@ class EmailViewModel @Inject constructor(
         return true
     }
 
-    fun logout(){
+     */
+
+ /*   fun logout(){
         emailRepository.logout()
     }
 
-    private lateinit var auth: FirebaseAuth
+  */
 
-    fun login(){
+
+
+    fun login(email: String, password: String) {
         auth = Firebase.auth
-        val authenticathionEmail:AuthenticathionEmail
-        authenticathionEmail = AuthenticationFirebaseService()
-        viewModelScope.async {
-             authenticathionEmail.singInEmailAndPassword("matheus@gmail.com",
-                                                "m@th3us39!",
-                                                 auth)
 
+        viewModelScope.async {
+            authEmailRepository
+                 .singInEmailPassword(email,password,auth)
         }
         if (auth.currentUser != null){
             _state.value = Result.Success(true)
         }
-
-
-
     }
-
+     /*
     fun forgotPassword(emailUser: String){
         val result = emailRepository.sendPasswordResetEmail(emailUser)
         _state.value = Result.Success(result)
     }
 
-    fun register(uriImage:Uri ,email:String, password: String){
+      */
+
+   /* fun register(uriImage:Uri ,email:String, password: String){
         viewModelScope.async {
             try {
                 val uid = emailRepository.createNewRegister(email, password)
@@ -127,6 +124,8 @@ class EmailViewModel @Inject constructor(
             }
         }
     }
+
+    */
 
     fun createNewUser(uidUser: String,urlDaImagem: String,statusActivated : Boolean): Passageiro {
 
@@ -144,45 +143,8 @@ class EmailViewModel @Inject constructor(
 
 }
 
-class AuthenticationFirebaseService:AuthenticathionEmail {
-
-    override suspend fun singInEmailAndPassword(
-        emailUsuario: String,
-        password: String,
-        firebaseAuth: FirebaseAuth
-    ): AuthResult? {
-       return try {
-            val result = firebaseAuth.signInWithEmailAndPassword(emailUsuario,password).await()
-            result
-        }catch (e : Exception){
-            Log.d("AuthResult", "${e.message}")
-            null
-        }
 
 
-    }
-
-    override suspend fun createUserWithEmailAndPassword(
-        emailUsuario: String,
-        password: String,
-        firebaseAuth: FirebaseAuth
-    ): AuthResult? {
-        return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(emailUsuario,password).await()
-            result
-        }catch (e : Exception){
-            Log.d("AuthResult Exception", "${e.message}")
-            null
-        }
-    }
-
-}
-
-interface AuthenticathionEmail{
-
-    suspend fun singInEmailAndPassword(emailUsuario: String, password: String, firebaseAuth: FirebaseAuth):AuthResult?
-    suspend fun createUserWithEmailAndPassword(emailUsuario: String, password: String, firebaseAuth: FirebaseAuth):AuthResult?
-}
 
 
 

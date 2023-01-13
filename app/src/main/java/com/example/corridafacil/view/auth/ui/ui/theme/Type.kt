@@ -5,6 +5,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.corridafacil.R
 
@@ -16,7 +17,7 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = CustomFonts().getInterFamily(),
         fontWeight = FontWeight.Normal,
-        fontSize = 34.sp
+        fontSize = 26.sp
     ),
     h3 = TextStyle(
         fontFamily = CustomFonts().getInterFamily(),
@@ -36,12 +37,13 @@ val Typography = Typography(
     ),
     overline = TextStyle(
         fontFamily = CustomFonts().getInterFamily(),
-        fontWeight = FontWeight.Light,
-        fontSize = 13.sp
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
     ),
     subtitle1 = TextStyle(
         fontFamily = CustomFonts().getInterFamily(),
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
         color = ColorFieldText
     )
     /* Other default text styles to override
@@ -70,6 +72,8 @@ class CustomFonts{
         Font(R.font.inter_bold, FontWeight.Bold),
         Font(R.font.inter_black, FontWeight.Black)
     )
+
+
 
     @JvmName("getInterFamily1")
     fun getInterFamily(): FontFamily {

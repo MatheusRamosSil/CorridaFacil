@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -26,48 +25,87 @@ import androidx.navigation.compose.rememberNavController
 import com.example.corridafacil.R
 import com.example.corridafacil.utils.responsive.WindowSize
 import com.example.corridafacil.utils.responsive.rememberWindowSize
+import com.example.corridafacil.utils.validators.errorMessageUI.MessageErrorForBadFormatInFormsFields
 import com.example.corridafacil.view.auth.ui.ui.theme.*
+import com.example.corridafacil.view.auth.ui.ui.theme.components.Title
+import com.example.corridafacil.view.auth.ui.ui.theme.components.inputPassword
+import com.example.corridafacil.view.auth.ui.ui.theme.components.inputOutlinedText
 
 @Composable
-fun RegisterScreen(window: WindowSize, navController: NavHostController) {
-    BoxWithConstraints(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)){
-        Background(window)
+fun RegisterScreen(window: WindowSize,
+                   navController: NavHostController
+) {
 
-        Column( verticalArrangement = Arrangement.Center,
-            modifier = Modifier
+    var firstName by remember { mutableStateOf("")}
+    var lastName by remember { mutableStateOf("")}
+    var email by remember { mutableStateOf("")}
+    var password by remember { mutableStateOf("")}
+
+    var isFormatValidFirstName by remember { mutableStateOf(true) }
+    var isFormatValidLastName by remember { mutableStateOf(true) }
+    var isFormatValidEmail by remember { mutableStateOf(true) }
+    var isFormatValidPassword by remember { mutableStateOf(true) }
+
+
+            Background(window)
+
+            Column( modifier= Modifier
                 .fillMaxSize()
-                .padding(24.dp)
-        ){
-            Text(text = "Cadastro",
-                style = MaterialTheme.typography.h1)
-            Text(text = "Por favor, adicione seus dados a seguir:",
-                style = MaterialTheme.typography.overline)
+                .navigationBarsPadding()
+                .imePadding()
+                .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-            ){
-                Column( verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .padding(top = 50.dp)
-                        .imePadding()
-                ){
+                Title("Cadastro",
+                    "Por favor, adicione seus dados a seguir:")
 
-                    fieldProfile()
-                    fieldInput(labelName = "Nome")
-                    fieldInput(labelName = "Sobrenome")
-                    fieldInput(labelName = "Email")
-                    fieldPassword(labelName = "Senha")
+                //fieldProfile()
 
-                    buttonNextPage()
-                }
+                inputOutlinedText(
+                    labelName = "Nome",
+                    isValidateField = isFormatValidFirstName,
+                    errorMessage = MessageErrorForBadFormatInFormsFields.NAME_FORMAT_BAD,
+                    value = firstName,
+                    onValueChange= {firstName = it},
+                    modifier = Modifier.padding(8.dp),
+                    typeKeyBoard = KeyboardType.Text
+                )
+
+                inputOutlinedText(
+                    labelName = "Sobrenome",
+                    isValidateField = isFormatValidLastName,
+                    errorMessage = MessageErrorForBadFormatInFormsFields.EMAIL_FORMAT_BAD,
+                    value = lastName,
+                    onValueChange= {lastName = it},
+                    modifier = Modifier.padding(8.dp),
+                    typeKeyBoard = KeyboardType.Text
+                )
+
+               /* inputOutlinedText(
+                    labelName = "Email",
+                    isValidateField = isFormatValidEmail,
+                    errorMessage = MessageErrorForBadFormatInFormsFields.EMAIL_FORMAT_BAD,
+                    value = email,
+                    onValueChange= {email = it},
+                    modifier = Modifier.padding(8.dp)
+                )
+
+                inputPassword(
+                    value = password,
+                    labelName = "Senha",
+                    isValidateField = isFormatValidPassword,
+                    errorMessage = MessageErrorForBadFormatInFormsFields.PASSWORD_FORMAT_BAD,
+                    onValueChange = {password = it}
+                )
+
+                */
+
+                buttonNextPage()
             }
-        }
 
-    }
+
+
 }
 
 @Composable
@@ -94,37 +132,39 @@ fun buttonNextPage() {
 
 
 }
-
+/*
 @Composable
 fun fieldProfile() {
-        Row(horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 12.dp)){
-            Column(verticalArrangement = Arrangement.Center,
-                   horizontalAlignment = Alignment.CenterHorizontally) {
-                BoxWithConstraints(
-                    modifier = Modifier.padding(25.dp)
-                ) {
-                    Canvas(modifier = Modifier.padding(start = 48.dp, top = 48.dp)){
-                        drawCircle(
-                            color = Color.Black,
-                            radius= 260f,
-                            style = Stroke( 3.dp.toPx())
-                        )
-                    }
-
-                    Image(painter = painterResource(id = R.drawable.profile),
-                        contentDescription = null,
-                        modifier = Modifier.width(100.dp)
+    Row(horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(bottom = 12.dp)){
+        Column(verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            BoxWithConstraints(
+                modifier = Modifier.padding(25.dp)
+            ) {
+                Canvas(modifier = Modifier.padding(start = 48.dp, top = 48.dp)){
+                    drawCircle(
+                        color = Color.Black,
+                        radius= 260f,
+                        style = Stroke( 3.dp.toPx())
                     )
                 }
 
+                Image(painter = painterResource(id = R.drawable.profile),
+                    contentDescription = null,
+                    modifier = Modifier.width(100.dp)
+                )
             }
 
-
-
         }
+
+
+
+    }
 }
+
+ */
 
 @Composable
 fun fieldInput( labelName: String){

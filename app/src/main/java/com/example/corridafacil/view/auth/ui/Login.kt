@@ -1,9 +1,6 @@
 package com.example.corridafacil.view.auth.ui
 
-import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,27 +8,19 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.corridafacil.R
 import com.example.corridafacil.view.auth.ui.componentsView.ComponentsViewActivity
 import com.example.corridafacil.view.auth.ui.register.FormAddPhone
 import com.example.corridafacil.view.auth.viewModel.EmailViewModel
 import com.example.corridafacil.view.auth.viewModel.Result
 import com.example.corridafacil.databinding.ActivityLoginBinding
-import com.example.corridafacil.utils.permissions.Permissions.acessFineLocationPermissions
-import com.example.corridafacil.view.mapa.ui.MapsActivity
-import com.example.corridafacil.utils.validators.ValidatorsFieldsForms.isValidEmail
-import com.example.corridafacil.utils.validators.ValidatorsFieldsForms.isValidPassword
-import com.example.corridafacil.utils.validators.errorMessageUI.MessageErrorForBadFormatInFormsFields
-import com.example.corridafacil.utils.validators.errorMessageUI.ShowMessageErrorBadFormart.showMensageErrorFormaBad
 import com.example.corridafacil.utils.permissions.Permissions.checkForPermissions
-import com.example.corridafacil.utils.permissions.Permissions.hasReadExternalStoragePermission
 import com.example.corridafacil.utils.permissions.Permissions.isLocationEnabled
 import com.example.corridafacil.utils.responsive.rememberWindowSize
 import com.example.corridafacil.view.auth.ui.ui.theme.CorridaFacilTheme
+import com.example.corridafacil.view.mapa.ui.MapsActivity
 import com.example.corridafacil.view.utils.SetupNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,8 +43,6 @@ class Login : AppCompatActivity() {
                 SetupNavigation(navController,window)
             }
         }
-
-        viewModelEmail.login()
         checkForPermissions(this,android.Manifest.permission.ACCESS_FINE_LOCATION,"Permission location",1)
 
         checkGPSEnabled()
@@ -104,10 +91,10 @@ class Login : AppCompatActivity() {
               Log.w("Value da opcao", "${it}")
               when(it){
                   is Result.Success ->{
-                      val emailIsVerified = viewModelEmail.checkUserAuthenticated()!!.isEmailVerified
-                      Log.w("Email is verified", "${emailIsVerified}")
-                     // if (emailIsVerified){
-                      //    startActivity(Intent(this@Login, MapsActivity::class.java))
+                      //val emailIsVerified = viewModelEmail.checkUserAuthenticated()!!.isEmailVerified
+                      //Log.w("Email is verified", "${emailIsVerified}")
+
+                          startActivity(Intent(this@Login, MapsActivity::class.java))
                       //}else{
                        //   Toast.makeText(this@Login, "Por favor verifique o email de verificação que foi enviado para o seu email",Toast.LENGTH_SHORT).show()
                       //}
