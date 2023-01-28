@@ -45,7 +45,7 @@ class FirebaseMenssagingServices : FirebaseMessagingService()  {
     private fun pushNotification(notificationManager: NotificationManager,remoteMessage: RemoteMessage){
         val notificationID = Random.nextInt()
         val intent = Intent(this, MapsActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
+        //val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -53,7 +53,7 @@ class FirebaseMenssagingServices : FirebaseMessagingService()  {
             .setContentText(remoteMessage.data["message"])
             .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
             .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
+            //.setContentIntent(pendingIntent)
             .build()
 
         notificationManager.notify(notificationID, notification)
@@ -92,4 +92,6 @@ class FirebaseMenssagingServices : FirebaseMessagingService()  {
         }
 
     }
+
+
 }

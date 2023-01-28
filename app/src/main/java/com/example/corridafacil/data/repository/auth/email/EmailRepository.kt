@@ -18,6 +18,6 @@ interface EmailRepository {
     suspend fun saveNewUserInRealTimeDataBase(newInstancePassgeiro:Passageiro):Boolean
     //suspend fun sendEmailVerification():Void?
 
-    suspend fun generateNewTokenFCM(): String
+    //suspend fun generateNewTokenFCM(): String
     suspend fun checkUserDevice(uid: String): Passageiro
 }

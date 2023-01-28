@@ -5,4 +5,5 @@ sealed class ScreensNavigate(val route:String){
     object Profile: ScreensNavigate(route ="profile_screen")
     object RegisterEmail : ScreensNavigate(route="register_email")
     object RegisterPhone : ScreensNavigate(route = "register_phone")
+    //object RegisterCodeOTP : ScreensNavigate(route ="register_codes_sms")
 }

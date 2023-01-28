@@ -96,7 +96,7 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
                 moverVisualizacaoDoMapa(viewSizeSouthwest,viewSizeNortheast)
 
                 val token = "e-c_K0ImQe2zN33cvtXXgw:APA91bEcHBjXMggl7rxdeqLdFdWUkYSsnmFuApvWRM-_HxY1IFV6BHOI3Vl54qYpaMfApvdbYmcbcLOf4EXzjRBEaSFsv56h4hm3QW1feNBsNjAouWQPmeO3FNVvBlegKG_nsu0dSfPJ"
-                mapRepository.sendNotification(token)
+                //mapRepository.sendNotification(token)
             }catch (exception : Exception){
                 Log.w("Error load routes", exception.message.toString())
             }

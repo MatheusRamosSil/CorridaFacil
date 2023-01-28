@@ -18,6 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CorridaFacil">
         <activity
+            android:name=".view.auth.ui.register.RegisteCodeOTPActivity"
+            android:exported="false"
+            android:label="@string/title_activity_registe_code_otpactivity"
+            android:theme="@style/Theme.CorridaFacil">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".view.auth.ui.register.FormProfile"
             android:exported="false"
             android:label="@string/title_activity_form_profile"
@@ -49,12 +58,13 @@
             android:exported="false"
             android:label="@string/title_activity_form_add_email"
             android:theme="@style/Theme.CorridaFacil" />
+
         <activity
             android:name=".view.auth.ui.register.FormAddCodeSms"
             android:exported="false"
-            android:label="@string/title_activity_form_add_code_sms"
             android:theme="@style/Theme.CorridaFacil"
             tools:ignore="MissingClass" />
+
         <activity
             android:name=".view.mapa.ui.MapsActivity"
             android:exported="false"
@@ -71,7 +81,8 @@
 
         <service
             android:name="com.example.corridafacil.domain.services.FirebaseMenssaging.FirebaseMenssagingServices"
-            android:exported="false"
+            android:enabled="true"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

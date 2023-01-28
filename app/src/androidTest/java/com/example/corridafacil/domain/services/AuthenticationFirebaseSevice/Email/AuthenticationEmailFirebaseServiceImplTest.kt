@@ -33,7 +33,7 @@ class AuthenticationEmailFirebaseServiceImplTest {
 
         val result = emailFirebaseServiceImpl.singInEmailAndPassword("matheuszeramossilva2000@gmail.com","P@scoa2143")
 
-        assertEquals("IA0ICvQNKpXvW3nitLm7BwzLYc23",result)
+        assertEquals("IA0ICvQNKpXvW3nitLm7BwzLYc23",result!!.user!!.uid)
     }
 
     @Test

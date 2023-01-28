@@ -67,7 +67,6 @@ fun inputOutlinedText(
 
 @Composable
 fun inputOutlinedPhone(
-
     labelName: String,
     value: String,
     onValueChange: (String) -> Unit,

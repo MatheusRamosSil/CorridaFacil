@@ -6,8 +6,9 @@ import com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.Pho
 import com.example.corridafacil.data.repository.auth.phone.PhoneRepository
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import javax.inject.Inject
 
-class PhoneRepositoryImpl(private val authenticationPhoneFirebaseService: AuthenticationPhoneFirebaseService):PhoneRepository{
+class PhoneRepositoryImpl  @Inject constructor(private val authenticationPhoneFirebaseService: AuthenticationPhoneFirebaseService):PhoneRepository{
 
 
     override fun startVerificationPhone(

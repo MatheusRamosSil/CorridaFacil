@@ -24,6 +24,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
+    h5 = TextStyle(
+        fontFamily = CustomFonts().getInterFamily(),
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp
+    ),
 
     body2 = TextStyle(
         fontFamily = CustomFonts().getInterFamily(),
@@ -45,7 +50,19 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         color = ColorFieldText
-    )
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = CustomFonts().getInterFamily(),
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    ),
+    h4 = TextStyle(
+        fontFamily = CustomFonts().getInterFamily(),
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        color = ColorText
+
+    ),
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,

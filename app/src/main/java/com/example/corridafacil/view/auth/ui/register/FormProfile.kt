@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.corridafacil.utils.responsive.rememberWindowSize
 import com.example.corridafacil.view.auth.ui.RegisterScreen
-import com.example.corridafacil.view.auth.ui.register.ui.theme.CorridaFacilTheme
+import com.example.corridafacil.view.auth.ui.ui.theme.CorridaFacilTheme
 
 class FormProfile : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

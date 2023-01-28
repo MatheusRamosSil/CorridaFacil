@@ -1,5 +1,6 @@
 package com.example.corridafacil.view.auth.ui
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,14 +10,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.example.corridafacil.utils.responsive.WindowSize
 import com.example.corridafacil.utils.validators.ValidatorsFieldsForms.isValidEmail
 import com.example.corridafacil.utils.validators.ValidatorsFieldsForms.isValidPassword
 import com.example.corridafacil.utils.validators.errorMessageUI.MessageErrorForBadFormatInFormsFields
+import com.example.corridafacil.view.auth.ui.register.FormAddCodeSms
+import com.example.corridafacil.view.auth.ui.register.FormAddPhone
+import com.example.corridafacil.view.auth.ui.register.RegisteCodeOTPActivity
 import com.example.corridafacil.view.auth.ui.ui.theme.Background
 import com.example.corridafacil.view.auth.ui.ui.theme.components.*
 import com.example.corridafacil.view.auth.viewModel.EmailViewModel
@@ -92,6 +98,7 @@ fun LoginScreen(window: WindowSize,
 
 @Composable
 fun MakerNewRegister(navController: NavController) {
+    val context = LocalContext.current
 
     Row(modifier = Modifier.padding(top = 45.dp)){
         Text(text = "Não é cadastrado?",
@@ -99,7 +106,10 @@ fun MakerNewRegister(navController: NavController) {
             fontSize = 14.sp)
         Text(text = " Faça seu cadastro",
             modifier = Modifier.clickable {
-                navController.navigate(ScreensNavigate.Profile.route)
+
+                val intent = Intent(context,RegisteCodeOTPActivity::class.java)
+                context.startActivity(intent)
+                //navController.navigate(ScreensNavigate.Profile.route)
             },
             style = MaterialTheme.typography.h3,
             color = MaterialTheme.colors.onSurface)

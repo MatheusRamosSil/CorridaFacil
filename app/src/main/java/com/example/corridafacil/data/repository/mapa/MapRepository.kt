@@ -70,7 +70,7 @@ interface MapRepository {
     fun loadingNearbyDriversDevices(myLocationDevice: LatLng, raioDeBusca: Double, geofireImp: GeoFireImp)
 
 
-    suspend fun sendNotification(tokenDriver: String)
+   // suspend fun sendNotification(tokenDriver: String)
 
     suspend fun onLocationChanged():Location
 

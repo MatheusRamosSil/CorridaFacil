@@ -16,3 +16,4 @@ val DarkYellowGradientCircle200 = Color(0xFFFF9100)
 
 // Field colors in RegisterScreen
 val ColorFieldText = Color(0xFF827D7D)
+val ColorText = Color(0xFFCF7F16)

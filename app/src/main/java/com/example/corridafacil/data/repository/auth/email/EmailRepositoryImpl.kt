@@ -55,11 +55,14 @@ class EmailRepositoryImpl @Inject constructor(
 
     }
 
-    */
-
     override suspend fun generateNewTokenFCM(): String {
         return FirebaseMenssagingServices().generateTokenFCM()
     }
+
+    */
+
+
+
 
     override suspend fun checkUserDevice(uid: String): Passageiro {
         return passageiroDAO.readDataUser(uid)

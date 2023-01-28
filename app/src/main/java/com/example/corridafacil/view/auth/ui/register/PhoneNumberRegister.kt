@@ -29,8 +29,6 @@ import com.togitech.ccp.component.*
 fun PhoneRegister(window: WindowSize,
                           navController: NavHostController
 ) {
-
-
     var phoneNumber by remember { mutableStateOf("") }
     var countryCodePicker by remember { mutableStateOf("") }
     val countryCode = CountryPicker()
@@ -58,41 +56,13 @@ fun PhoneRegister(window: WindowSize,
         Title("Cadastro",
             "Por favor, adicione seus dados a seguir:")
 
-        Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start) {
-            Row( modifier = Modifier.padding(24.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center) {
-
-
-                countryCode.CountryCodeDialog(
-                    pickedCountry = {
-                        countryCodePicker = it.countryPhoneCode
-                        Log.v("TAG", "country name is : ${it.countryPhoneCode}")
-                    },
-                    defaultSelectedCountry = getListOfCountries().single { it.countryCode == "us" },
-                    dialogSearch = true,
-                    dialogRounded = 4
-                )
-
-                inputOutlinedPhone(
-                    labelName = "Telefone",
-                    value = phoneNumber,
-                    onValueChange= {phoneNumber = it},
-                    modifier = Modifier.padding(start = 16.dp),
-                )
-            }
-            if(!isFormatValidPhone){
-                Text(text = MessageErrorForBadFormatInFormsFields.PHONE_BAD_FORMAT,
-                    color = Color.Red,
-                    style = MaterialTheme.typography.overline,
-                    modifier = Modifier.padding(start = 24.dp)
-                )
-            }
-
-        }
-
+        SelectCodePickerAndPhoneField(
+            countryCode,
+            isFormatValidPhone,
+            phoneNumber,
+            onValueChange = {phoneNumber = it},
+            onValueChangeCodePicker = {countryCodePicker = it}
+        )
 
         Column(
             modifier = Modifier
@@ -109,6 +79,50 @@ fun PhoneRegister(window: WindowSize,
     }
 
 
+}
+
+@Composable
+fun SelectCodePickerAndPhoneField(
+    countryCode: CountryPicker,
+    isFormatValidPhone: Boolean,
+    phoneNumber:String,
+    onValueChangeCodePicker: (String) -> Unit,
+    onValueChange: (String) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start) {
+        Row( modifier = Modifier.padding(24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center) {
+
+
+            countryCode.CountryCodeDialog(
+                pickedCountry = {
+                    onValueChangeCodePicker(it.countryPhoneCode)
+                    Log.v("TAG", "country name is : ${it.countryPhoneCode}")
+                },
+                defaultSelectedCountry = getListOfCountries().single { it.countryCode == "us" },
+                dialogSearch = true,
+                dialogRounded = 4
+            )
+
+            inputOutlinedPhone(
+                labelName = "Telefone",
+                value = phoneNumber,
+                onValueChange= {onValueChange(it)},
+                modifier = Modifier.padding(start = 16.dp),
+            )
+        }
+        if(!isFormatValidPhone){
+            Text(text = MessageErrorForBadFormatInFormsFields.PHONE_BAD_FORMAT,
+                color = Color.Red,
+                style = MaterialTheme.typography.overline,
+                modifier = Modifier.padding(start = 24.dp)
+            )
+        }
+
+    }
 }
 
 @Preview(showBackground = true)

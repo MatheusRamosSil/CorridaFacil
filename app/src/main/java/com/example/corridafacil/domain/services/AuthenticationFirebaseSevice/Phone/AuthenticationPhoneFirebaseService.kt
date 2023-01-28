@@ -5,8 +5,9 @@ import com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.Fir
 import com.example.corridafacil.domain.services.AuthenticationFirebaseSevice.PhoneProviderUtil
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import javax.inject.Inject
 
-class AuthenticationPhoneFirebaseService: AuthenticationPhoneFirebase {
+class AuthenticationPhoneFirebaseService @Inject constructor(): AuthenticationPhoneFirebase {
 
     override fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential,

@@ -29,9 +29,12 @@ class MapRepositoryImpl(
 ) : MapRepository {
 
 
+    /*
     override suspend fun sendNotification(tokenDriver:String){
         firebaseMenssagingServices.sendNotification(tokenDriver)
     }
+
+     */
 
     override suspend fun onLocationChanged(): Location {
         return googleMapsService.onLocationChanged()
