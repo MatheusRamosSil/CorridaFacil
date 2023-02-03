@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
-import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -80,10 +80,10 @@ class FirebaseMenssagingServices : FirebaseMessagingService()  {
         return FirebaseMessaging.getInstance().token.await().toString()
     }
 
-    suspend fun sendNotification(toDriverTokenFCM: String){
+    suspend fun sendNotification(toDriverTokenFCM: String, uidUser:String? = null){
         try {
             Log.w("Entrou", "na função")
-            val dataNotification = NotificationData("ncmpuXsK0ZXBtUhXAGdxzxNm1RY2","30",null,ConstantsFCM.SIMPLE_NOTIFICATION)
+            val dataNotification = NotificationData(uidUser,"test","25",ConstantsFCM.CALL_TO_RUN)
             val pushNotification = PushNotification(dataNotification,toDriverTokenFCM)
             val response = ApiClientNotification.api
             response.postNotification(pushNotification)

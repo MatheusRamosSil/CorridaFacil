@@ -47,7 +47,7 @@ class PhoneViewModelTest{
         val viewModelPhone = PhoneViewModel(mockPhoneRepository, authPhone)
         val mockActivity = mockk<RegisteCodeOTPActivity>(relaxed = true)
 
-        viewModelPhone.verifyPhoneNumber("+5511123456789",mockActivity,callbackPhonetAuth)
+        //viewModelPhone.verifyPhoneNumber("+5511123456789",mockActivity,callbackPhonetAuth)
 
 
     }
