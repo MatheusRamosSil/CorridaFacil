@@ -25,7 +25,7 @@ interface MapRepository {
     fun addMakerInLocationDevice(deviceLocation:LatLng)
 
 
-    fun addPointInMap(newPoint:LatLng): Marker
+    //fun addPointInMap(newPoint:LatLng): Marker
 
 
     fun moverVisualizacao(tamanhoDaVisualicao: LatLngBounds)

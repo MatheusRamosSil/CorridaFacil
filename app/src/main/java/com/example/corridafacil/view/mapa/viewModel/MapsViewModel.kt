@@ -11,6 +11,7 @@ import com.example.corridafacil.utils.mapa.ContantsMaps
 import com.example.corridafacil.utils.mapa.Others.ConvertData
 import com.example.corridafacil.data.repository.mapa.MapRepository
 import com.example.corridafacil.data.models.Geofire.GeoFireImp
+import com.example.corridafacil.view.auth.viewModel.Result
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -20,18 +21,30 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.model.Place
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+sealed class StateMap{
+
+    data class LocationDevice(val locationDevice: LatLng):StateMap()
+    object Empty: StateMap()
+
+}
 class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
     var limitesDaVisualizacao = LatLngBounds.builder()
     lateinit var minhaLocalizacao : LatLng
     private val resultLocationRequest: LocationRequest
 
+    val _state = MutableStateFlow(LatLng(0.000, 0.0))
+    val stateUI : StateFlow<LatLng> = _state
+
    init{
        resultLocationRequest = mapRepository.createLocationRequest()
     }
 
+    /*
     private val locationCallback = object : LocationCallback(){
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
@@ -43,6 +56,8 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
         }
     }
 
+     */
+
     fun addMarker(position:LatLng){
         Log.i("Changed locatin", position.toString())
            mapRepository.addMakerInLocationDevice(position)
@@ -52,9 +67,10 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
     fun getLastLocationDevice(){
         viewModelScope.launch {
             minhaLocalizacao = mapRepository.getLocationDevice()
+            _state.value = minhaLocalizacao
             Log.i("Device last location", minhaLocalizacao.toString())
             mapRepository.addMakerInLocationDevice(minhaLocalizacao)
-            saveDataLocationsInGeoFire(minhaLocalizacao)
+           // saveDataLocationsInGeoFire(minhaLocalizacao)
             carregandoDispositivosProximos(minhaLocalizacao, ContantsMaps.RAIO_DE_BUSCA)
         }
     }
@@ -62,7 +78,7 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
     fun saveDataLocationsInGeoFire(deviceLocation: LatLng){
         val locationDeviceInGeoFire = GeoLocation(deviceLocation.latitude,deviceLocation.longitude)
         val userUID = FirebaseAuth.getInstance().currentUser?.uid
-        mapRepository.saveDataInDatabaseGeoFire(userUID,locationDeviceInGeoFire)
+       // mapRepository.saveDataInDatabaseGeoFire(userUID,locationDeviceInGeoFire)
     }
 
     fun updateDataLocationInDataBase(uidAuth: String, dataLocationUpdated : Map<String,GeoLocation>){
@@ -114,7 +130,7 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
             override fun onSuccess(place: Place) {
                 mapRepository.clearMap()
                 limitesDaVisualizacao.include(place.latLng)
-                place.latLng?.let { mapRepository.addPointInMap(it)
+                place.latLng?.let {// mapRepository.addPointInMap(it)
                                      inicializarRotas(minhaLocalizacao,it)
                 }
 
@@ -136,8 +152,8 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
         mapRepository.loadingNearbyDriversDevices(myLoacationDevices,raioDeBusca, object : GeoFireImp{
             override fun succesOnLocationResul(key: String, location: GeoLocation?) {
-                val marker = mapRepository.addPointInMap(LatLng(location!!.latitude,location.longitude))
-                markersDriversHashMap.put(key,marker)
+               // val marker = mapRepository.addPointInMap(LatLng(location!!.latitude,location.longitude))
+                //markersDriversHashMap.put(key,marker)
             }
 
 
@@ -148,8 +164,8 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
             override fun getKeyMoved(key: String?, location: GeoLocation) {
                 mapRepository.removeMarker(markersDriversHashMap[key])
-                val marker = mapRepository.addPointInMap(LatLng(location.latitude,location.longitude))
-                markersDriversHashMap.put(key,marker)
+               // val marker = mapRepository.addPointInMap(LatLng(location.latitude,location.longitude))
+               // markersDriversHashMap.put(key,marker)
             }
 
             @SuppressLint("LongLogTag")

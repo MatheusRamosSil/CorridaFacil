@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.corridafacil.data.models.Passageiro
 import com.example.corridafacil.data.repository.auth.AuthEmailRepository
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -18,6 +19,7 @@ import javax.inject.Inject
 sealed class Result{
     data class Success(val status: Boolean) : Result()
     data class Error(val exception: Exception) : Result()
+    data class LocationDevice(val locationDevice: LatLng):Result()
     object Empty: Result()
 
 }

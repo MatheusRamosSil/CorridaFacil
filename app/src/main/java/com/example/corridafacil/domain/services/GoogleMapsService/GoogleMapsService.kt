@@ -70,9 +70,11 @@ open class GoogleMapsService (private val mapApplication: MapApplication){
         mapApplication.mMap.isMyLocationEnabled = true
     }
 
-    fun adicionarNovoPontoNoMapa(novoPonto:LatLng): Marker{
+    /*fun adicionarNovoPontoNoMapa(novoPonto:LatLng): Marker{
         return mapApplication.mMap.addMarker(MarkerOptions().position(novoPonto))
     }
+
+     */
 
     fun removerMarcardorDoMapa(marker: Marker?){
         Log.i("Marker Location", marker?.position.toString())

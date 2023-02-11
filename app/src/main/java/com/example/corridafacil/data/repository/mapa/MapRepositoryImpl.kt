@@ -69,9 +69,11 @@ class MapRepositoryImpl(
 
     override fun addMakerInLocationDevice(deviceLocation:LatLng) = googleMapsService.addMarkerInLocationDevice(deviceLocation)
 
-    override fun addPointInMap(newPoint:LatLng): Marker {
+    /*override fun addPointInMap(newPoint:LatLng): Marker {
         return googleMapsService.adicionarNovoPontoNoMapa(newPoint)
     }
+
+     */
 
 
     override fun moverVisualizacao(tamanhoDaVisualicao:LatLngBounds){

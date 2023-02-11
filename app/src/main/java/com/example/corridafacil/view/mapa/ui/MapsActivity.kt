@@ -8,10 +8,20 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.corridafacil.R
 import com.example.corridafacil.domain.services.DirectionsRoutes.Retrofit.DirectionsRoutesServices
 import com.example.corridafacil.domain.services.FirebaseMenssaging.FirebaseMenssagingServices
@@ -31,7 +41,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener{
@@ -40,6 +56,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener{
     private lateinit var binding: ActivityMapsBinding
     lateinit var mapViewModel: MapsViewModel
     var mapApplication = MapApplication.create()
+    lateinit var locationCurrentDevice:LatLng
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +64,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener{
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        setContent {
+
+
+            val location by mapViewModel.stateUI.collectAsState()
+            val cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(LatLng(-7.7480167,-37.6346617), 10f)
+            }
+
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                Marker(
+                    state = MarkerState(position = location),
+                    title = "Singapore",
+                    snippet = "Marker in Singapore"
+                )
+            }
+
+        }
         //Iniciliza o autocomplete fragment
         val autocompleteSupportFragment = (supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                                            as AutocompleteSupportFragment?)!!
@@ -85,6 +123,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener{
 
         Log.w("permission garanted", locationPermissionGranted.toString())
 
+
+    }
+    @Composable
+    private fun getCurrenteLocation()
+    {
 
     }
 

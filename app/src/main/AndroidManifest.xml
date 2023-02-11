@@ -33,15 +33,15 @@
             android:label="@string/title_activity_form_profile"
             android:theme="@style/Theme.CorridaFacil"
             android:windowSoftInputMode="adjustResize" />
-        <!--
-<activity
-            android:name=".auth.ui.LoginActivity"
+
+        <activity
+            android:name="view.auth.ui.Login"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.CorridaFacil" />
-        -->
+            android:theme="@style/Theme.CorridaFacil"
+            tools:ignore="MissingClass" />
         <activity
-            android:name=".view.auth.ui.Login"
+            android:name=".view.mapa.ui.MapsActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -66,10 +66,10 @@
             android:theme="@style/Theme.CorridaFacil"
             tools:ignore="MissingClass" />
 
-        <activity
+       <!-- <activity
             android:name=".view.mapa.ui.MapsActivity"
             android:exported="false"
-            android:theme="@style/Theme.CorridaFacil.NoActionBar" />
+            android:theme="@style/Theme.CorridaFacil.NoActionBar" /> -->
         <activity
             android:name=".view.auth.ui.register.FormAddPhone"
             android:exported="false"
@@ -78,7 +78,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${googleMapsApiKey}" />
+            android:value="${GOOGLE_MAPS_API_KEY}" />
 
         <service
             android:name="com.example.corridafacil.domain.services.FirebaseMenssaging.FirebaseMenssagingServices"
