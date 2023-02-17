@@ -3,6 +3,9 @@ package com.example.corridafacil.view.mapa.viewModel
 import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.corridafacil.domain.services.DirectionsRoutes.Retrofit.Models.InputDataRoutes
@@ -20,22 +23,40 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.HashMap
 
 sealed class StateMap{
 
-    data class LocationDevice(val locationDevice: LatLng):StateMap()
+    val currentLocation: Location? = null
     object Empty: StateMap()
 
 }
+
+data class AutocompleteResult(
+    val address: String,
+    val placeId: String
+)
+
 class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
 
     var limitesDaVisualizacao = LatLngBounds.builder()
     lateinit var minhaLocalizacao : LatLng
     private val resultLocationRequest: LocationRequest
+
+    val locationAutofill = mutableStateListOf<AutocompleteResult>()
+    private var job: Job? = null
+    lateinit var placesClient: PlacesClient
+
+
 
     val _state = MutableStateFlow(LatLng(0.000, 0.0))
     val stateUI : StateFlow<LatLng> = _state
@@ -43,6 +64,52 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
    init{
        resultLocationRequest = mapRepository.createLocationRequest()
     }
+
+    fun searchPlaces(query: String) {
+        job?.cancel()
+        locationAutofill.clear()
+        job = viewModelScope.launch {
+            val codeISOCountry = Locale.getDefault().country
+            val request = FindAutocompletePredictionsRequest
+                .builder()
+                .setQuery(query)
+                .setCountry(codeISOCountry)
+                .build()
+            placesClient
+                .findAutocompletePredictions(request)
+                .addOnSuccessListener { response ->
+                    locationAutofill += response.autocompletePredictions.map {
+                        AutocompleteResult(
+                            it.getFullText(null).toString(),
+                            it.placeId
+                        )
+                    }
+                }
+                .addOnFailureListener {
+                    it.printStackTrace()
+                    println(it.cause)
+                    println(it.message)
+                }
+        }
+    }
+
+    fun getCoordinates(result: AutocompleteResult) {
+        val placeFields = listOf(Place.Field.LAT_LNG)
+        val request = FetchPlaceRequest.newInstance(result.placeId, placeFields)
+        placesClient.fetchPlace(request)
+            .addOnSuccessListener {
+                if (it != null) {
+                    Log.w("Iniciar rotas","${it.place.latLng}")
+                  //  currentLatLong = it.place.latLng!!
+                    inicializarRotas(minhaLocalizacao, it.place.latLng)
+                }
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+            }
+    }
+
+
 
     /*
     private val locationCallback = object : LocationCallback(){
@@ -182,7 +249,7 @@ class MapsViewModel(private val mapRepository: MapRepository) : ViewModel(){
         val locationDeviceInGeoFire = GeoLocation(p0.latitude,p0.longitude)
         val dataUpdated = mapOf("l" to locationDeviceInGeoFire)
 
-        addMarker(currentLocationDevice)
+        //addMarker(currentLocationDevice)
         updateDataLocationInDataBase(uidAuth,dataUpdated)
     }
 }
